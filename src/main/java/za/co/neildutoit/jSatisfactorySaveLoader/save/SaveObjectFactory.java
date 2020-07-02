@@ -18,18 +18,20 @@ public class SaveObjectFactory {
   //TODO: Make this cache
   private Class<?> getClazzByAnnotation(String classNameToMatch) {
 
-    if (loadedClasses.containsKey(classNameToMatch))
-    {
+    if (loadedClasses.containsKey(classNameToMatch)) {
       return loadedClasses.get(classNameToMatch);
     }
 
     Reflections reflections = new Reflections("za.co.neildutoit.jSatisfactorySaveLoader.game");
     Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(SaveObjectClass.class);
+    System.out.println(classNameToMatch);
     for (Class<?> clazz : annotated) {
-      String className = clazz.getAnnotation(SaveObjectClass.class).value();
-      if (classNameToMatch.trim().equals(className.trim())) {
-        loadedClasses.put(classNameToMatch, clazz);
-        return clazz;
+      if (clazz.getAnnotation(SaveObjectClass.class) != null) {
+        String className = clazz.getAnnotation(SaveObjectClass.class).value();
+        if (classNameToMatch.trim().equals(className.trim())) {
+          loadedClasses.put(classNameToMatch, clazz);
+          return clazz;
+        }
       }
     }
     return null;
