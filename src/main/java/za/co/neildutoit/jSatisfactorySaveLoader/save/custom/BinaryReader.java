@@ -34,7 +34,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public int readInt32() throws IOException {
-    incrementPosition(4);
+//    readBytes already does this incrementPosition(4);
     return ByteBuffer.wrap(this.readBytes(4))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getInt()
@@ -49,7 +49,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public long readInt64() throws IOException {
-    incrementPosition(8);
+    //incrementPosition(8);
     return ByteBuffer.wrap(this.readBytes(8))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getLong()
@@ -64,7 +64,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public long readUInt32() throws IOException {
-    incrementPosition(4);
+//    incrementPosition(4);
     return this.readInt32() & 0xFFFFFFFFL;
   }
 
@@ -75,7 +75,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public int readInt16() throws IOException {
-    incrementPosition(2);
+//    incrementPosition(2);
     return ByteBuffer.wrap(this.readBytes(2))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getShort()
@@ -89,7 +89,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public int readUInt16() throws IOException {
-    incrementPosition(2);
+//    incrementPosition(2);
     return this.readInt16() & 0xFFFF;
   }
 
@@ -100,7 +100,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public short readShort() throws IOException {
-    incrementPosition(2);
+//    incrementPosition(2);
     return ByteBuffer.wrap(this.readBytes(2))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getShort()
@@ -114,7 +114,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public String readString() throws IOException {
-    incrementPosition(this.getStringLength());
+//    incrementPosition(this.getStringLength());
     return new String(this.readBytes(this.getStringLength()));
   }
 
@@ -125,7 +125,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public boolean readBoolean() throws IOException {
-    incrementPosition(1);
+//    incrementPosition(1);
     return this.readBytes(1)[0] != 0;
   }
 
@@ -136,7 +136,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public float readSingle() throws IOException {
-    incrementPosition(4);
+//    incrementPosition(4);
     return ByteBuffer.wrap(this.readBytes(4))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getFloat()
@@ -176,7 +176,7 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public byte readByte() throws IOException {
-    incrementPosition(1);
+//    incrementPosition(1);
     return ByteBuffer.wrap(this.readBytes(1))
         .order(ByteOrder.LITTLE_ENDIAN)
         .get()
@@ -202,6 +202,10 @@ public class BinaryReader extends FilterInputStream {
     setPosition(getPosition() + increment);
   }
 
+  private void decrementPosition(int decrement) {
+    setPosition(getPosition() - decrement);
+  }
+
   private int position;
 
   public int getPosition() {
@@ -214,6 +218,8 @@ public class BinaryReader extends FilterInputStream {
 
   public String readCharArray() throws IOException {
     int count = readInt32();
+    //readInt32 increments position incorrectly when compared to C#
+//    decrementPosition(2);
     if (count >= 0) {
       byte[] bytes = readBytes(count);
       return new String(bytes, StandardCharsets.UTF_8);
