@@ -97,22 +97,15 @@ public class StructProperty extends SerializedProperty implements IStructPropert
 //  }
 
   public static StructProperty deserialize(BinaryReader reader, String propertyName, int size, int index, MutableInt overhead) throws IOException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-    int pos = reader.getPosition();
     StructProperty result = new StructProperty(propertyName, index);
     String structType = reader.readCharArray().trim();
     overhead.setValue(structType.trim().length() + 22);
 
-    pos = reader.getPosition();
     result.Unk1 = reader.readInt32();
-    pos = reader.getPosition();
     result.Unk2 = reader.readInt32();
-    pos = reader.getPosition();
     result.Unk3 = reader.readInt32();
-    pos = reader.getPosition();
     result.Unk4 = reader.readInt32();
-    pos = reader.getPosition();
     result.Unk5 = reader.readByte();
-    pos = reader.getPosition();
 
     int before = reader.getPosition();
 
@@ -142,7 +135,7 @@ public class StructProperty extends SerializedProperty implements IStructPropert
       return;
     }
 
-    if (data == null || field.getType().getTypeName() != data.getClass().getTypeName())
+    if (data == null || !field.getType().getTypeName().equals(data.getClass().getTypeName()))
     {
 //      log.Error($"Attempted to assign {PropertyType} {PropertyName} to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
       saveObject.addDynamicProperty(this);

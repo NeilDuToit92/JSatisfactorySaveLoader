@@ -1,7 +1,5 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save;
 
-import za.co.neildutoit.jSatisfactorySaveLoader.game.enums.ESessionVisibility;
-
 public abstract class TextEntry {
   /*
   amespace SatisfactorySaveParser.Save

@@ -39,6 +39,7 @@ public class GameStruct implements IPropertyContainer {
     SerializedProperty prop;
     while ((prop = SatisfactorySaveSerializer.deserializeProperty(reader)) != null)
     {
+      //TODO: @NDT - need to do mapping here
       Wrapper wrapper = prop.getMatchingStructProperty(this.getClass().getTypeName());
 
       if (wrapper.getProperty() == null)

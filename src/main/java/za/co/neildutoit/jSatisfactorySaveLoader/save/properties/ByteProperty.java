@@ -35,7 +35,7 @@ public class ByteProperty extends SerializedProperty implements IBytePropertyVal
   /**
    * Indicates if this ByteProperty is holding a <see cref="EnumAsByte{T}"/>
    */
-  private boolean isEnum = enumType != null && enumType != "None";
+  private boolean isEnum = false;
 
   public ByteProperty(String propertyName, int index) {
     super(propertyName, index);

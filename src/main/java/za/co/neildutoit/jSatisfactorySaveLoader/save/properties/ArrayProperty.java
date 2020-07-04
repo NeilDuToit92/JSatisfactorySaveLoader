@@ -1,7 +1,6 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 
 import org.apache.commons.lang3.mutable.MutableInt;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.GameStruct;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.GameStructFactory;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;

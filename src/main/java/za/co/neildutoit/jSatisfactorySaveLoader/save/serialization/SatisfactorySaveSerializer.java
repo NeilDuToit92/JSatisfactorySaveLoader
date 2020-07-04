@@ -12,9 +12,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
@@ -140,8 +138,7 @@ public class SatisfactorySaveSerializer {
       outputStream.write(buffer, 0, count);
     }
     outputStream.close();
-    byte[] output = outputStream.toByteArray();
-    return output;
+    return outputStream.toByteArray();
   }
 
   public static FSaveHeader deserializeHeader(BinaryReader reader) throws IOException {
@@ -216,7 +213,6 @@ public class SatisfactorySaveSerializer {
 
 //    Trace.Assert(save.Objects.Count == totalSaveObjects);
 //    Trace.Assert(save.Objects.Count == totalSaveObjectData);
-//    assert 2 < 10;
 
     for (int i = 0; i < save.getObjects().size(); i++) {
       deserializeObjectData(save.getObjects().get(i), reader);
@@ -290,22 +286,12 @@ public class SatisfactorySaveSerializer {
 //        throw new UnsupportedEncodingException("Unknown SaveObject kind" + saveObject.getObjectKind());
     }
 
-    int pos = reader.getPosition();
     SerializedProperty prop;
     while ((prop = deserializeProperty(reader)) != null) {
-      pos = reader.getPosition();
-      String a = "";
-
-//      prop.getMatchingSaveProperty(saveObject.getClass().getTypeName());
-//      prop.getMatchingStructProperty(saveObject.getClass().getTypeName());
 
       Field field = prop.getMatchingSaveProperty(saveObject.getClass());
-//      var(objProperty, _) = prop.GetMatchingSaveProperty(saveObject.GetType());
 
       if (field == null) {
-//        String type = saveObject.getClass().getTypeName();
-////
-
         String propType = "";
         if (prop.getBackingObject() != null) {
           propType = prop.getBackingObject().getType().getTypeName();
@@ -317,10 +303,10 @@ public class SatisfactorySaveSerializer {
         //TODO:
         String propertyUniqueName = saveObject.getClass().getTypeName() + "." + prop.getPropertyName() + ":" + propType;
         if (!missingProperties.contains(propertyUniqueName)) {
-////TODO          if (type == typeof(SaveActor) || type == typeof(SaveComponent))
-////            log.Warn($"Missing property for {propType} {prop.PropertyName} on {saveObject.TypePath}");
-////          else
-////            log.Warn($"Missing property for {propType} {prop.PropertyName} on {type.Name}");
+//TODO          if (type == typeof(SaveActor) || type == typeof(SaveComponent))
+//            log.Warn($"Missing property for {propType} {prop.PropertyName} on {saveObject.TypePath}");
+//          else
+//            log.Warn($"Missing property for {propType} {prop.PropertyName} on {type.Name}");
 
           missingProperties.add(propertyUniqueName);
         }
@@ -332,7 +318,6 @@ public class SatisfactorySaveSerializer {
       prop.assignToProperty(saveObject, field);
     }
 
-    pos = reader.getPosition();
     int extra = reader.readInt32();
 //TODO    if (extra != 0)
 //      log.Warn($"Read extra {extra} after {saveObject.TypePath} @ {reader.BaseStream.Position - 4}");
@@ -397,6 +382,7 @@ public class SatisfactorySaveSerializer {
       case ObjectProperty.TYPE_NAME:
         result = ObjectProperty.deserialize(reader, propertyName, index);
         break;
+      //TODO: @NDT - SetProperty hasn't been done yet
 //      case SetProperty.TYPE_NAME:
 //        result = SetProperty.parse(reader, propertyName, index, overhead);
 //        break;
@@ -426,7 +412,6 @@ public class SatisfactorySaveSerializer {
 //      throw new InvalidOperationException($"Expected {size} bytes read but got {readBytes}");
 
     return result;
-//    return null;
   }
 
   public List<ObjectReference> deserializeDestroyedActors(BinaryReader reader) throws IOException {

@@ -3,6 +3,7 @@ package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 import com.sun.xml.internal.bind.v2.model.core.PropertyInfo;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.StructPropertyAttribute;
 
+//TODO: @NDT Remove this class
 public class Wrapper {
   private PropertyInfo property;
   private StructPropertyAttribute attribute;

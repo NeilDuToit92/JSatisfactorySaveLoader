@@ -110,6 +110,7 @@ public class SerializedProperty {
   /**
    * Attempts to find a matching struct property for this serialized property. Returns null if one can't be found.
    */
+  //TODO: @NDT
   public Wrapper getMatchingStructProperty(String targetType) {
     Wrapper wrapper = new Wrapper();
     if (targetType.equals("DynamicGameStruct"))

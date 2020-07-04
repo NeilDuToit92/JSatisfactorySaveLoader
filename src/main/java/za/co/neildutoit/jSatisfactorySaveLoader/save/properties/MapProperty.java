@@ -1,13 +1,11 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 
-import com.sun.xml.internal.bind.v2.model.core.PropertyInfo;
 import org.apache.commons.lang3.mutable.MutableInt;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.DynamicGameStruct;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.GameStruct;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.arrayValues.*;
-import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -123,8 +121,6 @@ public class MapProperty extends SerializedProperty {
           StructArrayValue structArrayValue = new StructArrayValue();
           structArrayValue.setData(gameStruct);
           value = structArrayValue;
-          p1 = reader.getPosition();
-          p1 = reader.getPosition();
 
         }
         break;

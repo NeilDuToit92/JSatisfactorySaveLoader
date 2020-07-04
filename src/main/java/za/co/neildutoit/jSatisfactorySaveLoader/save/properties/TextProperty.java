@@ -6,6 +6,7 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.ITextPropertyValue;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class TextProperty extends SerializedProperty implements ITextPropertyValue {
   public static final String TYPE_NAME = "TextProperty";
@@ -49,7 +50,7 @@ public class TextProperty extends SerializedProperty implements ITextPropertyVal
 //    TextEntry.ETextHistoryType historyType = TextEntry.ETextHistoryType.values()[historyTypeByte];
     TextEntry.ETextHistoryType historyType = TextEntry.ETextHistoryType.getByNumber(historyTypeByte);
 
-    switch (historyType) {
+    switch (Objects.requireNonNull(historyType)) {
       //TODO: Start here
       case Base: {
         TextEntry.BaseTextEntry baseTextEntry = new TextEntry.BaseTextEntry();
