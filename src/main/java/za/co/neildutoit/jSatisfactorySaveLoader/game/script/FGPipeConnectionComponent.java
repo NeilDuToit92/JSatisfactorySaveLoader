@@ -10,18 +10,18 @@ public class FGPipeConnectionComponent extends FGPipeConnectionComponentBase {
   /// <summary>
   ///     The inventory of this connection. This can be null in many cases.
   /// </summary>
-//        [SaveProperty("mConnectionInventory")]
-//  public ObjectReference ConnectionInventory { get; set; }
+//        @SaveProperty("mConnectionInventory")]
+//  public ObjectReference ConnectionInventory //{ get; set; }
 //
 //  /// <summary>
 //  ///     The inventory index utilized by this connection ( -1 for none specified ).
 //  /// </summary>
-//        [SaveProperty("mInventoryAccessIndex")]
-//  public int InventoryAccessIndex { get; set; }
+//        @SaveProperty("mInventoryAccessIndex")]
+//  public int InventoryAccessIndex //{ get; set; }
 //
 //  /// <summary>
 //  ///     The network this connection is connected to. INDEX_NONE if not connected.
 //  /// </summary>
-//        [SaveProperty("mPipeNetworkID")]
-//  public int PipeNetworkID { get; set; }
+//        @SaveProperty("mPipeNetworkID")]
+//  public int PipeNetworkID //{ get; set; }
 }

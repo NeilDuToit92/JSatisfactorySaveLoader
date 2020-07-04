@@ -18,7 +18,7 @@ public class FGSaveSession {
   /**
    * List of object references of all destroyed/collected objects in the world (nut/berry bushes, slugs, etc)
    */
-  private List<ObjectReference> destroyedActors;
+  private List<ObjectReference> destroyedActors = new ArrayList<>();
 
   /**
    * Tries to find an object with the specified type, instantiates it, adds it to the <see cref="Objects"/> list and returns the instance.

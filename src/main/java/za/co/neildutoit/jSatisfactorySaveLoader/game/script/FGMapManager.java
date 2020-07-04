@@ -5,6 +5,6 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveActor;
 
 @SaveObjectClass("/Script/FactoryGame.FGMapManager")
 public class FGMapManager extends SaveActor {
-//        [SaveProperty("mFogOfWarRawData")]
+//        @SaveProperty("mFogOfWarRawData")]
 //    public List<byte> FogOfWarRawData { get; } = new List<byte>();
 }

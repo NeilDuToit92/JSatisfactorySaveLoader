@@ -12,12 +12,12 @@ public class RailroadSubsystem extends SaveActor {
 //    /// <summary>
 //    ///     All station identifiers in the world.
 //    /// </summary>
-//        [SaveProperty("mTrainStationIdentifiers")]
+//        @SaveProperty("mTrainStationIdentifiers")]
 //    public List<ObjectReference> TrainStationIdentifiers { get; } = new List<ObjectReference>();
 //
 //    /// <summary>
 //    ///     All the trains in the world.
 //    /// </summary>
-//        [SaveProperty("mTrains")]
+//        @SaveProperty("mTrains")]
 //    public List<ObjectReference> Trains { get; } = new List<ObjectReference>();
 }

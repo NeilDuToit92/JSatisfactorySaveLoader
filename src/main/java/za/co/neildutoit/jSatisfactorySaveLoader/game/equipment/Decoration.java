@@ -9,7 +9,7 @@ public class Decoration extends SaveActor {
     /// <summary>
     ///     The descriptor of this decoration
     /// </summary>
-//        [SaveProperty("mDecorationDescriptor")]
-//    public ObjectReference DecorationDescriptor { get; set; }
+//        @SaveProperty("mDecorationDescriptor")]
+//    public ObjectReference DecorationDescriptor //{ get; set; }
 
 }

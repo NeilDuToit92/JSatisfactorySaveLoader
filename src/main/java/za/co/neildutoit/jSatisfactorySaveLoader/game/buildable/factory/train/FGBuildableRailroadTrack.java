@@ -9,18 +9,18 @@ public abstract class FGBuildableRailroadTrack extends FGBuildable {
 //  /// <summary>
 //  ///     Spline data saved in a compact form for saving and replicating. All the vectors are in local space.
 //  /// </summary>
-//        [SaveProperty("mSplineData")]
+//        @SaveProperty("mSplineData")]
 //  public List<FSplinePointData> mSplineData { get; } = new List<FSplinePointData>();
 //
 //  /// <summary>
 //  ///     This tracks connection component.
 //  /// </summary>
-//        [SaveProperty("mConnections")]
+//        @SaveProperty("mConnections")]
 //  public ObjectReference[] Connections { get; } = new ObjectReference[2];
 //
 //  /// <summary>
 //  ///     Was this track created and is owned by a platform.
 //  /// </summary>
-//        [SaveProperty("mIsOwnedByPlatform")]
-//  public bool IsOwnedByPlatform { get; set; }
+//        @SaveProperty("mIsOwnedByPlatform")]
+//  public bool IsOwnedByPlatform //{ get; set; }
 }

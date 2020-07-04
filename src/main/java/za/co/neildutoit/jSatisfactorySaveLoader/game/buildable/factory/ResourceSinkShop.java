@@ -10,6 +10,6 @@ public class ResourceSinkShop extends FGBuildableFactory {
     /// <summary>
     ///     The inventory that holds the purchases we made in the resource sink shop
     /// </summary>
-//        [SaveProperty("mShopInventory")]
-//    public ObjectReference ShopInventory { get; set; }
+//        @SaveProperty("mShopInventory")]
+//    public ObjectReference ShopInventory //{ get; set; }
 }

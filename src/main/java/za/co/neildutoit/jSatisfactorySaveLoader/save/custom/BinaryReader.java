@@ -34,7 +34,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public int readInt32() throws IOException {
-//    readBytes already does this incrementPosition(4);
     return ByteBuffer.wrap(this.readBytes(4))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getInt()
@@ -49,7 +48,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public long readInt64() throws IOException {
-    //incrementPosition(8);
     return ByteBuffer.wrap(this.readBytes(8))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getLong()
@@ -64,7 +62,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public long readUInt32() throws IOException {
-//    incrementPosition(4);
     return this.readInt32() & 0xFFFFFFFFL;
   }
 
@@ -75,7 +72,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public int readInt16() throws IOException {
-//    incrementPosition(2);
     return ByteBuffer.wrap(this.readBytes(2))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getShort()
@@ -89,7 +85,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public int readUInt16() throws IOException {
-//    incrementPosition(2);
     return this.readInt16() & 0xFFFF;
   }
 
@@ -100,7 +95,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public short readShort() throws IOException {
-//    incrementPosition(2);
     return ByteBuffer.wrap(this.readBytes(2))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getShort()
@@ -108,13 +102,12 @@ public class BinaryReader extends FilterInputStream {
   }
 
   /**
-   * Reads a string from the current stream. The string is prefixed with the length, encoded as an integer seven bits at a time.
+   * Reads a String from the current stream. The String is prefixed with the length, encoded as an integer seven bits at a time.
    *
    * @return
    * @throws IOException
    */
   public String readString() throws IOException {
-//    incrementPosition(this.getStringLength());
     return new String(this.readBytes(this.getStringLength()));
   }
 
@@ -125,7 +118,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public boolean readBoolean() throws IOException {
-//    incrementPosition(1);
     return this.readBytes(1)[0] != 0;
   }
 
@@ -136,7 +128,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public float readSingle() throws IOException {
-//    incrementPosition(4);
     return ByteBuffer.wrap(this.readBytes(4))
         .order(ByteOrder.LITTLE_ENDIAN)
         .getFloat()
@@ -146,11 +137,10 @@ public class BinaryReader extends FilterInputStream {
   /**
    * Source: https://github.com/vrecan/Thaw-Giant/blob/master/src/main/java/com/vreco/thawgiant/BinaryUtil.java
    * Binary files are encoded with a variable length prefix that tells you
-   * the size of the string. The prefix is encoded in a 7bit format where the
+   * the size of the String. The prefix is encoded in a 7bit format where the
    * 8th bit tells you if you should continue. If the 8th bit is set it means
    * you need to read the next byte.
    *
-   * @param bytes
    * @return
    * @throws IOException
    */
@@ -176,7 +166,6 @@ public class BinaryReader extends FilterInputStream {
    * @throws IOException
    */
   public byte readByte() throws IOException {
-//    incrementPosition(1);
     return ByteBuffer.wrap(this.readBytes(1))
         .order(ByteOrder.LITTLE_ENDIAN)
         .get()
@@ -218,14 +207,12 @@ public class BinaryReader extends FilterInputStream {
 
   public String readCharArray() throws IOException {
     int count = readInt32();
-    //readInt32 increments position incorrectly when compared to C#
-//    decrementPosition(2);
     if (count >= 0) {
       byte[] bytes = readBytes(count);
-      return new String(bytes, StandardCharsets.UTF_8);
+      return new String(bytes, StandardCharsets.UTF_8).trim();
     } else {
       byte[] bytes = readBytes(count * -2);
-      return new String(bytes, StandardCharsets.UTF_8);
+      return new String(bytes, StandardCharsets.UTF_8).trim();
     }
   }
 
@@ -279,5 +266,15 @@ public class BinaryReader extends FilterInputStream {
     String level = readCharArray();
     String path = readCharArray();
     return new ObjectReference(level, path);
+  }
+
+  public void assertNullByte() throws IOException {
+    int nullByte = readByte();
+//TODO    Trace.Assert(nullByte == 0, $"Expected null byte, got {nullByte} instead at {reader.BaseStream.Position - 1}");
+  }
+
+  public void assertNullInt32() throws IOException {
+    int nullInt = readInt32();
+//    TODO: Trace.Assert(nullInt == 0, $"Expected null int32, got {nullInt} instead at {reader.BaseStream.Position - 4}");
   }
 }

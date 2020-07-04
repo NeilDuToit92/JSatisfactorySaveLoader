@@ -13,7 +13,7 @@ namespace SatisfactorySaveParser.Game.Buildable.Factory.Train
         /// <summary>
         ///     Connection we control.
         /// </summary>
-        [SaveProperty("mControlledConnection")]
-        public ObjectReference ControlledConnection { get; set; }
+        @SaveProperty("mControlledConnection")]
+        public ObjectReference ControlledConnection //{ get; set; }
     }
 }

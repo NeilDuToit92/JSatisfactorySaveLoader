@@ -10,7 +10,7 @@ public abstract class FGBuildableConveyorBase extends FGBuildable {
 //    var itemCount = reader.ReadInt32();
 //    for (var i = 0; i < itemCount; i++)
 //    {
-//      reader.AssertNullInt32(); // probably a string
+//      reader.AssertNullInt32(); // probably a String
 //      Items.Add(new FConveyorBeltItem(item: reader.ReadLengthPrefixedString(), state: reader.ReadObjectReference(), offset: reader.ReadSingle()));
 //    }
 //  }

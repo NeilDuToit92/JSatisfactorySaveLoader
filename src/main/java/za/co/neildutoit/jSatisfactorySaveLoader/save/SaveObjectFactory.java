@@ -15,7 +15,6 @@ public class SaveObjectFactory {
 
   Map<String, Class<?>> loadedClasses = new HashMap<>();
 
-  //TODO: Make this cache
   private Class<?> getClazzByAnnotation(String classNameToMatch) {
 
     if (loadedClasses.containsKey(classNameToMatch)) {
@@ -24,7 +23,6 @@ public class SaveObjectFactory {
 
     Reflections reflections = new Reflections("za.co.neildutoit.jSatisfactorySaveLoader.game");
     Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(SaveObjectClass.class);
-    System.out.println(classNameToMatch);
     for (Class<?> clazz : annotated) {
       if (clazz.getAnnotation(SaveObjectClass.class) != null) {
         String className = clazz.getAnnotation(SaveObjectClass.class).value();

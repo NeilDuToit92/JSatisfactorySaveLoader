@@ -6,9 +6,9 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveActor;
 @SaveObjectClass("/Script/FactoryGame.FGWorldSettings")
 public class FGWorldSettings extends SaveActor {
 
-//        [SaveProperty("mBuildableSubsystem")]
-//    public ObjectReference BuildableSubsystem { get; set; }
+//        @SaveProperty("mBuildableSubsystem")]
+//    public ObjectReference BuildableSubsystem //{ get; set; }
 //
-//        [SaveProperty("mFoundationSubsystem")]
-//    public ObjectReference FoundationSubsystem { get; set; }
+//        @SaveProperty("mFoundationSubsystem")]
+//    public ObjectReference FoundationSubsystem //{ get; set; }
 }

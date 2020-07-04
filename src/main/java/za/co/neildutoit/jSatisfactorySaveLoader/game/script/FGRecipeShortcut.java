@@ -5,6 +5,6 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveComponent;
 
 @SaveObjectClass("/Script/FactoryGame.FGRecipeShortcut")
 public class FGRecipeShortcut extends SaveComponent {
-//  [SaveProperty("mRecipeToActivate")]
-//  public ObjectReference RecipeToActivate { get; set; }
+//  @SaveProperty("mRecipeToActivate")]
+//  public ObjectReference RecipeToActivate //{ get; set; }
 }

@@ -1,44 +1,44 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.game.buildable.vehicle;
 
 public abstract class FGWheeledVehicle extends FGVehicle {
-//  [SaveProperty("mCurrentFuelAmount")]
-//  public float CurrentFuelAmount { get; set; }
+//  @SaveProperty("mCurrentFuelAmount")]
+//  public float CurrentFuelAmount //{ get; set; }
 //
-//        [SaveProperty("mIsLoadingVehicle")]
-//  public bool IsLoadingVehicle { get; set; }
+//        @SaveProperty("mIsLoadingVehicle")]
+//  public bool IsLoadingVehicle //{ get; set; }
 //
-//        [SaveProperty("mIsUnloadingVehicle")]
-//  public bool IsUnloadingVehicle { get; set; }
+//        @SaveProperty("mIsUnloadingVehicle")]
+//  public bool IsUnloadingVehicle //{ get; set; }
 //
-//        [SaveProperty("mCurrentFuelClass")]
-//  public ObjectReference CurrentFuelClass { get; set; }
+//        @SaveProperty("mCurrentFuelClass")]
+//  public ObjectReference CurrentFuelClass //{ get; set; }
 //
-//        [SaveProperty("mIsSimulated")]
-//  public bool IsSimulated { get; set; }
+//        @SaveProperty("mIsSimulated")]
+//  public bool IsSimulated //{ get; set; }
 //
-//        [SaveProperty("mFuelInventory")]
-//  public ObjectReference FuelInventory { get; set; }
+//        @SaveProperty("mFuelInventory")]
+//  public ObjectReference FuelInventory //{ get; set; }
 //
-//        [SaveProperty("mStorageInventory")]
-//  public ObjectReference StorageInventory { get; set; }
+//        @SaveProperty("mStorageInventory")]
+//  public ObjectReference StorageInventory //{ get; set; }
 //
-//        [SaveProperty("mTargetNodeLinkedList")]
-//  public ObjectReference TargetNodeLinkedList { get; set; }
+//        @SaveProperty("mTargetNodeLinkedList")]
+//  public ObjectReference TargetNodeLinkedList //{ get; set; }
 //
-//        [SaveProperty("mIsPathVisible")]
-//  public bool IsPathVisible { get; set; }
+//        @SaveProperty("mIsPathVisible")]
+//  public bool IsPathVisible //{ get; set; }
 //
-//        [SaveProperty("mCurrentDestination")]
-//  public FVector CurrentDestination { get; set; }
+//        @SaveProperty("mCurrentDestination")]
+//  public FVector CurrentDestination //{ get; set; }
 //
-//        [SaveProperty("mDesiredSteering")]
-//  public float DesiredSteering { get; set; }
+//        @SaveProperty("mDesiredSteering")]
+//  public float DesiredSteering //{ get; set; }
 //
-//        [SaveProperty("mSpeedLimit")]
-//  public int SpeedLimit { get; set; }
+//        @SaveProperty("mSpeedLimit")]
+//  public int SpeedLimit //{ get; set; }
 //
-//        [SaveProperty("mIsAutoPilotEnabled")]
-//  public bool IsAutoPilotEnabled { get; set; }
+//        @SaveProperty("mIsAutoPilotEnabled")]
+//  public bool IsAutoPilotEnabled //{ get; set; }
 //
 //  public List<MaybeBone> MaybeBones { get; } = new List<MaybeBone>();
 //
@@ -60,9 +60,9 @@ public abstract class FGWheeledVehicle extends FGVehicle {
 //
 //public class MaybeBone
 //{
-//  public string Name { get; set; }
-//  public Vector3 Position { get; set; }
-//  public Vector4 Rotation { get; set; }
-//  public byte[] Unknown { get; set; }
+//  public String Name //{ get; set; }
+//  public Vector3 Position //{ get; set; }
+//  public Vector4 Rotation //{ get; set; }
+//  public byte[] Unknown //{ get; set; }
 //}
 }

@@ -9,6 +9,6 @@ public class StorySubsystem extends SaveActor {
     /// <summary>
     ///     array of item descriptor class/message and if they have been found already
     /// </summary>
-//        [SaveProperty("mItemFoundData")]
+//        @SaveProperty("mItemFoundData")]
 //    public List<FItemFoundData> ItemFoundData { get; } = new List<FItemFoundData>();
 }

@@ -5,9 +5,9 @@ namespace SatisfactorySaveParser.Game.Structs
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class GameStructAttribute : Attribute
     {
-        public string StructName { get; set; }
+        public String StructName //{ get; set; }
 
-        public GameStructAttribute(string structName)
+        public GameStructAttribute(String structName)
         {
             StructName = structName;
         }

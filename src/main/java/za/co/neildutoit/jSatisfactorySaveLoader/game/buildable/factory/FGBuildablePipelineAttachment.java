@@ -7,6 +7,6 @@ public abstract class FGBuildablePipelineAttachment extends FGBuildableFactory {
   /// <summary>
   ///     Fluid box belonging to this integrant
   /// </summary>
-//        [SaveProperty("mFluidBox")]
-//  public FFluidBox FluidBox { get; set; }
+//        @SaveProperty("mFluidBox")]
+//  public FFluidBox FluidBox //{ get; set; }
 }

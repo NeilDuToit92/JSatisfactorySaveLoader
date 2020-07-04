@@ -14,18 +14,18 @@ public class BuildableSubsystem extends SaveActor {
 //  /// <summary>
 //  ///     DEPRECATED - Use Linear Color instead
 //  /// </summary>
-//        [SaveProperty("mColorSlotsPrimary"), Obsolete("Marked as deprecated in Satisfactory headers")]
+//        @SaveProperty("mColorSlotsPrimary"), Obsolete("Marked as deprecated in Satisfactory headers")]
 //  public FColor[] ColorSlotsPrimary { get; } = new FColor[BUILDABLE_COLORS_MAX_SLOTS];
 //
 //  /// <summary>
 //  ///     DEPRECATED - Use Linear Color instead
 //  /// </summary>
-//        [SaveProperty("mColorSlotsSecondary"), Obsolete("Marked as deprecated in Satisfactory headers")]
+//        @SaveProperty("mColorSlotsSecondary"), Obsolete("Marked as deprecated in Satisfactory headers")]
 //  public FColor[] ColorSlotsSecondary { get; } = new FColor[BUILDABLE_COLORS_MAX_SLOTS];
 //
-//        [SaveProperty("mColorSlotsPrimary_Linear")]
+//        @SaveProperty("mColorSlotsPrimary_Linear")]
 //  public List<FLinearColor> ColorSlotsPrimary_Linear { get; } = new List<FLinearColor>();
 //
-//        [SaveProperty("mColorSlotsSecondary_Linear")]
+//        @SaveProperty("mColorSlotsSecondary_Linear")]
 //  public List<FLinearColor> ColorSlotsSecondary_Linear { get; } = new List<FLinearColor>();
 }

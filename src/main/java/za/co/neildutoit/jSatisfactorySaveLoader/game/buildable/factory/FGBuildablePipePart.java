@@ -7,6 +7,6 @@ public abstract class FGBuildablePipePart extends FGBuildableFactory {
   /// <summary>
   ///     This supports length.
   /// </summary>
-//        [SaveProperty("mLength")]
-//  public float Length { get; set; }
+//        @SaveProperty("mLength")]
+//  public float Length //{ get; set; }
 }

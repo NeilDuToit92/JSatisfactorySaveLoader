@@ -1,38 +1,48 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.game.structs;
 
+import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.SerializedProperty;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.Wrapper;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.SatisfactorySaveSerializer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameStruct implements IPropertyContainer {
 //  private static readonly Logger log = LogManager.GetCurrentClassLogger();
-//  private static readonly HashSet<string> missingProperties = new HashSet<string>();
-//
-//  private List<SerializedProperty> dynamicProperties = null;
-//
+//  private static readonly HashSet<String> missingProperties = new HashSet<String>();
+
+  /**
+   * Fallback list of properties that had no matching class property
+   */
+  private List<SerializedProperty> dynamicProperties = null;
+
 //  public virtual int SerializedLength => 0;
-//  public abstract string StructName { get; }
+//  public abstract String StructName { get; }
 //
 //  /// <summary>
 //  ///     Fallback list of properties that had no matching class property
 //  /// </summary>
 //  public ReadOnlyCollection<SerializedProperty> DynamicProperties => dynamicProperties?.AsReadOnly();
 //
-//  public void AddDynamicProperty(SerializedProperty prop)
-//  {
-//    if (dynamicProperties is null)
-//    dynamicProperties = new List<SerializedProperty>();
-//
-//    dynamicProperties.Add(prop);
-//  }
-//
-//  public virtual void Deserialize(BinaryReader reader)
-//  {
-//    SerializedProperty prop;
-//    while ((prop = SatisfactorySaveSerializer.DeserializeProperty(reader)) != null)
-//    {
-//      var (objProperty, objPropertyAttr) = prop.GetMatchingStructProperty(GetType());
-//
-//      if (objProperty == null)
-//      {
+  public void addDynamicProperty(SerializedProperty prop)
+  {
+    if (dynamicProperties == null) {
+      dynamicProperties = new ArrayList<>();
+    }
+    dynamicProperties.add(prop);
+  }
+
+  public void deserialize(BinaryReader reader) throws IllegalAccessException, IOException, InstantiationException, NoSuchFieldException {
+    SerializedProperty prop;
+    while ((prop = SatisfactorySaveSerializer.deserializeProperty(reader)) != null)
+    {
+      Wrapper wrapper = prop.getMatchingStructProperty(this.getClass().getTypeName());
+
+      if (wrapper.getProperty() == null)
+      {
 //        if (GetType() != typeof(DynamicGameStruct))
 //        {
 //          var propertyUniqueName = $"{GetType().Name}.{prop.PropertyName}:{prop.PropertyType}";
@@ -49,11 +59,11 @@ public class GameStruct implements IPropertyContainer {
 //
 //        AddDynamicProperty(prop);
 //        continue;
-//      }
+      }
 //
 //      prop.AssignToProperty(this, objProperty);
-//    }
-//  }
+    }
+  }
 //
 //  public virtual void Serialize(BinaryWriter writer)
 //  {

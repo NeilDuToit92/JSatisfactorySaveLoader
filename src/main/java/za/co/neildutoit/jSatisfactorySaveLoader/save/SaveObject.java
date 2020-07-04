@@ -1,8 +1,10 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save;
 
+import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.SerializedProperty;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public abstract class SaveObject implements IPropertyContainer {
 
   /**
    * Forward slash separated path of the script/prefab of this object
-   * Can be an empty string
+   * Can be an empty String
    */
 
   private String typePath;
@@ -30,39 +32,43 @@ public abstract class SaveObject implements IPropertyContainer {
 
   private ObjectReference instance;
 
+  public String getTypePath() {
+    return typePath;
+  }
+
   public SaveObjectKind getObjectKind() {
     return objectKind;
   }
 
   ///     Fallback list of properties that had no matching class property
 
-//  public ReadOnlyCollection<SerializedProperty> DynamicProperties =>dynamicProperties?.
+//  private List<SerializedProperty> dynamicProperties = new ArrayList<>();
 //
 //  AsReadOnly();
 //
 //
 //  ///     Fallback array of native bytes that are only used for certain objects when serialization logic is missing, ideally always empty
 //
-//  public byte[] NativeData
+  public byte[] nativeData;
 //
 //  {
 //    get;
 //    set;
 //  } =null;
 //
-//  public override string
+//  public override String
 //
 //  ToString() {
 //    return TypePath;
 //  }
 //
-//  public void AddDynamicProperty(SerializedProperty prop) {
-//    if (dynamicProperties is null)
-//    dynamicProperties = new List<SerializedProperty>();
-//
-//    dynamicProperties.Add(prop);
-//  }
-//
+  public void addDynamicProperty(SerializedProperty prop) {
+    if (dynamicProperties == null) {
+      dynamicProperties = new ArrayList<>();
+    }
+    dynamicProperties.add(prop);
+  }
+
 //
 //  ///     Default implementation to allow saves to at least load when missing logic for proper deserialization of native data.
 //
@@ -70,14 +76,15 @@ public abstract class SaveObject implements IPropertyContainer {
 //  /// <param name="length"></param>
 //  public virtual
 //
-//  void DeserializeNativeData(BinaryReader reader, int length) {
-//    if (!missingDeserializers.Contains(TypePath)) {
+  public void deserializeNativeData(BinaryReader reader, int length) throws IOException {
+    if (!missingDeserializers.contains(typePath)) {
 //      log.Warn($"Missing native deserializer for {ObjectKind} {TypePath} ({length} bytes)");
-//      missingDeserializers.Add(TypePath);
-//    }
-//
-//    NativeData = reader.ReadBytes(length);
-//  }
+      System.out.println("Missing native deserializer for {ObjectKind} {TypePath} ({length} bytes)");
+      missingDeserializers.add(typePath);
+    }
+
+    this.nativeData = reader.readBytes(length);
+  }
 //
 //
 //  ///     Default implementation to allow saves to at least save when missing logic for proper serialization of native data.
@@ -103,5 +110,13 @@ public abstract class SaveObject implements IPropertyContainer {
 
   public void setInstance(ObjectReference instance) {
     this.instance = instance;
+  }
+
+  public byte[] getNativeData() {
+    return nativeData;
+  }
+
+  public void setNativeData(byte[] nativeData) {
+    this.nativeData = nativeData;
   }
 }

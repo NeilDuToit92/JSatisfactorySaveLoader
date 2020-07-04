@@ -1,14 +1,20 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save.serialization;
 
+import org.apache.commons.lang3.mutable.MutableInt;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.enums.ESessionVisibility;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.*;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
-import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.SerializedProperty;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.*;
 
+import java.beans.IntrospectionException;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
@@ -21,6 +27,8 @@ public class SatisfactorySaveSerializer {
   private final static Logger LOGGER = Logger.getLogger(SatisfactorySaveSerializer.class.getName());
 
   private final SaveObjectFactory saveObjectFactory = new SaveObjectFactory();
+
+  private static List<String> missingProperties = new ArrayList<>();
 
   //  public Event EventHandler<StageChangedEventArgs> deserializationStageChanged;
 //
@@ -45,7 +53,7 @@ public class SatisfactorySaveSerializer {
 //  });
   }
 
-  public FGSaveSession deserialize(File file) throws IOException, DataFormatException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public FGSaveSession deserialize(File file) throws IOException, DataFormatException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IntrospectionException, NoSuchFieldException {
     int currentDeserializationStage = 0;
     incrementDeserializationStage(SerializerStage.FileOpen);
     updateDeserializationProgress(0, -1);
@@ -71,12 +79,16 @@ public class SatisfactorySaveSerializer {
 //      updateDeserializationProgress(0, stream.Length);
       byte[] decompressedFull = new byte[0];
 
-      while (reader.getPosition() < file.length()) {
+      while (true) {
         FCompressedChunkHeader chunkHeader = reader.readCompressedChunkHeader();
 //        Trace.Assert(chunkHeader.PackageTag == FCompressedChunkHeader.Magic);
 
         FCompressedChunkInfo chunkInfo = reader.readCompressedChunkInfo();
 //        Trace.Assert(chunkHeader.UncompressedSize == chunkInfo.UncompressedSize);
+
+        if (chunkInfo.getCompressedSize() == 0) {
+          break;
+        }
 
         byte[] compressed = reader.readBytes((int) chunkInfo.getCompressedSize());
         byte[] decompressed = decompress(compressed);
@@ -96,6 +108,11 @@ public class SatisfactorySaveSerializer {
 
         uncompressedSize += chunkInfo.getUncompressedSize();
       }
+
+//      try (FileOutputStream fos = new FileOutputStream("uncompessedData")) {
+//        fos.write(decompressedFull);//18481152
+//        //fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
+//      }
 
       BinaryReader uncompressedReader = new BinaryReader(new ByteArrayInputStream(decompressedFull));
       uncompressedReader.setPosition(0);
@@ -168,7 +185,7 @@ public class SatisfactorySaveSerializer {
     return header;
   }
 
-  private void deserializeSaveData(FGSaveSession save, BinaryReader reader) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+  private void deserializeSaveData(FGSaveSession save, BinaryReader reader) throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, IntrospectionException, NoSuchFieldException {
     incrementDeserializationStage(SerializerStage.ReadObjects);
 
     // Does not need to be a public property because it's equal to Objects.Count
@@ -225,8 +242,7 @@ public class SatisfactorySaveSerializer {
     SaveObject saveObject = saveObjectFactory.createFromClass(kind, className);
     saveObject.setInstance(reader.readObjectReference());
 
-    switch (saveObject.getObjectKind())
-    {
+    switch (saveObject.getObjectKind()) {
       case Actor:
         SaveActor saveActor = (SaveActor) saveObject;
         saveActor.setNeedTransform(reader.readInt32() == 1);
@@ -234,14 +250,15 @@ public class SatisfactorySaveSerializer {
         saveActor.setPosition(reader.readVector3());
         saveActor.setScale(reader.readVector3());
 
-    if (saveActor.getScale().isSuspicious()) {
+        if (saveActor.getScale().isSuspicious()) {
 //TODO          log.Warn($"Actor {actor} has suspicious scale {actor.Scale}");
-    }
+        }
         saveActor.setWasPlacedInLevel(reader.readInt32() == 1);
         break;
 
       case Component:
-//      component.ParentEntityName = reader.ReadLengthPrefixedString();
+        SaveComponent saveComponent = (SaveComponent) saveObject;
+        saveComponent.setParentEntityName(reader.readCharArray());
         break;
 
       default:
@@ -251,18 +268,17 @@ public class SatisfactorySaveSerializer {
     return saveObject;
   }
 
-  public static void deserializeObjectData(SaveObject saveObject, BinaryReader reader) throws IOException {
+  public static void deserializeObjectData(SaveObject saveObject, BinaryReader reader) throws IOException, InstantiationException, IllegalAccessException, IntrospectionException, InvocationTargetException, NoSuchFieldException {
     int dataLength = reader.readInt32();
-//TODO: int before = reader. BaseStream.Position;
     int before = reader.getPosition();
 
     switch (saveObject.getObjectKind()) {
       case Actor:
         SaveActor actor = new SaveActor();
-//        actor.setParentObject(reader.readObjectReference());
+        actor.setParentObject(reader.readObjectReference());
         int componentCount = reader.readInt32();
         for (int i = 0; i < componentCount; i++) {
-//          actor.getComponents().add(reader.readObjectReference());
+          actor.getComponents().add(reader.readObjectReference());
         }
 
         break;
@@ -274,125 +290,143 @@ public class SatisfactorySaveSerializer {
 //        throw new UnsupportedEncodingException("Unknown SaveObject kind" + saveObject.getObjectKind());
     }
 
+    int pos = reader.getPosition();
     SerializedProperty prop;
     while ((prop = deserializeProperty(reader)) != null) {
+      pos = reader.getPosition();
+      String a = "";
+
+//      prop.getMatchingSaveProperty(saveObject.getClass().getTypeName());
+//      prop.getMatchingStructProperty(saveObject.getClass().getTypeName());
+
+      Field field = prop.getMatchingSaveProperty(saveObject.getClass());
 //      var(objProperty, _) = prop.GetMatchingSaveProperty(saveObject.GetType());
 
-//      if (objProperty == null) {
-//        var type = saveObject.GetType();
-//
-//        var propType = prop.PropertyType;
-//        if (prop is StructProperty structProp)
-//        propType += " ({structProp.Data.GetType().Name})";
-//
-//        //TODO:
-//        String propertyUniqueName = $ "{saveObject.TypePath}.{prop.PropertyName}:{propType}";
-//        if (!missingProperties.Contains(propertyUniqueName)) {
+      if (field == null) {
+//        String type = saveObject.getClass().getTypeName();
+////
+
+        String propType = "";
+        if (prop.getBackingObject() != null) {
+          propType = prop.getBackingObject().getType().getTypeName();
+        }
+        if (prop instanceof StructProperty) {
+          propType += ((StructProperty) prop).getData().getClass().getTypeName();
+        }
+
+        //TODO:
+        String propertyUniqueName = saveObject.getClass().getTypeName() + "." + prop.getPropertyName() + ":" + propType;
+        if (!missingProperties.contains(propertyUniqueName)) {
 ////TODO          if (type == typeof(SaveActor) || type == typeof(SaveComponent))
 ////            log.Warn($"Missing property for {propType} {prop.PropertyName} on {saveObject.TypePath}");
 ////          else
 ////            log.Warn($"Missing property for {propType} {prop.PropertyName} on {type.Name}");
-//
-//          missingProperties.Add(propertyUniqueName);
-//        }
-//
-//        saveObject.AddDynamicProperty(prop);
-//        continue;
-//      }
-//
-//      prop.AssignToProperty(saveObject, objProperty);
+
+          missingProperties.add(propertyUniqueName);
+        }
+
+        saveObject.addDynamicProperty(prop);
+        continue;
+      }
+
+      prop.assignToProperty(saveObject, field);
     }
 
+    pos = reader.getPosition();
     int extra = reader.readInt32();
 //TODO    if (extra != 0)
 //      log.Warn($"Read extra {extra} after {saveObject.TypePath} @ {reader.BaseStream.Position - 4}");
 
-//TODO:    var remaining = dataLength - (int) (reader.BaseStream.Position - before);
-    long remaining = dataLength - (int) (reader.getPosition() - before);
-//    if (remaining > 0)
-//      saveObject.deserializeNativeData(reader, remaining);
+    int remaining = dataLength - (reader.getPosition() - before);
+    if (remaining > 0) {
+      saveObject.deserializeNativeData(reader, remaining);
+    }
 
-//TODO    var after = reader.BaseStream.Position;
     long after = reader.getPosition();
 //TODO:    if (before + dataLength != after)
 //      throw new FatalSaveException($"Expected {dataLength} bytes read but got {after - before}", before);
   }
 
-  public static SerializedProperty deserializeProperty(BinaryReader reader) throws IOException {
+  public static SerializedProperty deserializeProperty(BinaryReader reader) throws IOException, IllegalAccessException, InstantiationException, NoSuchFieldException {
     SerializedProperty result;
 
     String propertyName = reader.readCharArray();
-    if (propertyName == "None")
+    if (propertyName.trim().equals("None")) {
       return null;
+    }
 
 //    TODO: Trace.Assert(!String.IsNullOrEmpty(propertyName));
 
-    String propertyType = reader.readCharArray();
+    String propertyType = reader.readCharArray().trim();
     int size = reader.readInt32();
     int index = reader.readInt32();
 
-    int overhead = 1;
-    //TODO: var before = reader.BaseStream.Position;
+    MutableInt overhead = new MutableInt(1);
     long before = reader.getPosition();
-//    switch (propertyType) {
-//      case ArrayProperty.TypeName:
-//        result = ArrayProperty.Parse(reader, propertyName, index, out overhead);
+    switch (propertyType) {
+      case ArrayProperty.TYPE_NAME:
+        result = ArrayProperty.parse(reader, propertyName, index, overhead);
+        break;
+      case BoolProperty.TYPE_NAME:
+        result = BoolProperty.deserialize(reader, propertyName, index, overhead);
+        break;
+      case ByteProperty.TYPE_NAME:
+        result = ByteProperty.deserialize(reader, propertyName, index, overhead);
+        break;
+      case EnumProperty.TYPE_NAME:
+        result = EnumProperty.deserialize(reader, propertyName, index, overhead);
+        break;
+      case FloatProperty.TYPE_NAME:
+        result = FloatProperty.deserialize(reader, propertyName, index);
+        break;
+      case IntProperty.TYPE_NAME:
+        result = IntProperty.deserialize(reader, propertyName, index);
+        break;
+      case Int64Property.TYPE_NAME:
+        result = Int64Property.deserialize(reader, propertyName, index);
+        break;
+      case InterfaceProperty.TYPE_NAME:
+        result = InterfaceProperty.deserialize(reader, propertyName, index);
+        break;
+      case MapProperty.TYPE_NAME:
+        result = MapProperty.deserialize(reader, propertyName, index, overhead);
+        break;
+      case NameProperty.TYPE_NAME:
+        result = NameProperty.deserialize(reader, propertyName, index);
+        break;
+      case ObjectProperty.TYPE_NAME:
+        result = ObjectProperty.deserialize(reader, propertyName, index);
+        break;
+//      case SetProperty.TYPE_NAME:
+//        result = SetProperty.parse(reader, propertyName, index, overhead);
 //        break;
-//      case BoolProperty.TypeName:
-//        result = BoolProperty.Deserialize(reader, propertyName, index, out overhead);
-//        break;
-//      case ByteProperty.TypeName:
-//        result = ByteProperty.Deserialize(reader, propertyName, index, out overhead);
-//        break;
-//      case EnumProperty.TypeName:
-//        result = EnumProperty.Deserialize(reader, propertyName, index, out overhead);
-//        break;
-//      case FloatProperty.TypeName:
-//        result = FloatProperty.Deserialize(reader, propertyName, index);
-//        break;
-//      case IntProperty.TypeName:
-//        result = IntProperty.Deserialize(reader, propertyName, index);
-//        break;
-//      case Int64Property.TypeName:
-//        result = Int64Property.Deserialize(reader, propertyName, index);
-//        break;
-//      case InterfaceProperty.TypeName:
-//        result = InterfaceProperty.Deserialize(reader, propertyName, index);
-//        break;
-//      case MapProperty.TypeName:
-//        result = MapProperty.Deserialize(reader, propertyName, index, out overhead);
-//        break;
-//      case NameProperty.TypeName:
-//        result = NameProperty.Deserialize(reader, propertyName, index);
-//        break;
-//      case ObjectProperty.TypeName:
-//        result = ObjectProperty.Deserialize(reader, propertyName, index);
-//        break;
-//      case SetProperty.TypeName:
-//        result = SetProperty.Parse(reader, propertyName, index, out overhead);
-//        break;
-//      case StrProperty.TypeName:
-//        result = StrProperty.Deserialize(reader, propertyName, index);
-//        break;
-//      case StructProperty.TypeName:
-//        result = StructProperty.Deserialize(reader, propertyName, size, index, out overhead);
-//        break;
-//      case TextProperty.TypeName:
-//        result = TextProperty.Deserialize(reader, propertyName, index);
-//        break;
-//      default:
-//        throw new NotImplementedException();
+      case StrProperty.TYPE_NAME:
+        result = StrProperty.deserialize(reader, propertyName, index);
+        break;
+      case StructProperty.TYPE_NAME:
+        result = StructProperty.deserialize(reader, propertyName, size, index, overhead);
+        break;
+      case TextProperty.TYPE_NAME:
+        result = TextProperty.deserialize(reader, propertyName, index);
+        break;
+      default:
+        System.out.println("Not implemented: " + propertyType);
+        throw new NotImplementedException();
 ////TODO:        throw new NotImplementedException("Unknown property type {propertyType} for property {propertyName}");
-//    }
+    }
     //TODO: var after = reader.BaseStream.Position;
     long after = reader.getPosition();
-    long readBytes = (int) (after - before - overhead);
+    long readBytes = (int) (after - before - overhead.getValue());
 
-//TODO:    if (size != readBytes)
+    if (size != readBytes) {
+
+      //TODO: Use logger
+      System.out.println("Expected " + size + " bytes read but got " + readBytes);
+    }
 //      throw new InvalidOperationException($"Expected {size} bytes read but got {readBytes}");
 
-//    return result;
-    return null;
+    return result;
+//    return null;
   }
 
   public List<ObjectReference> deserializeDestroyedActors(BinaryReader reader) throws IOException {

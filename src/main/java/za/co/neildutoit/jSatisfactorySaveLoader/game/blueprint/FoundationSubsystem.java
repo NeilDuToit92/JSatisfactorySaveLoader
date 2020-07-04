@@ -10,6 +10,6 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveActor;
 public class FoundationSubsystem extends SaveActor {
     ///     All the buildings in the game, map with foundation ID and the building struct.
     /// </summary>
-//        [SaveProperty("mBuildings")]
+//        @SaveProperty("mBuildings")]
 //    public Dictionary<int, FBuilding> Buildings { get; } = new Dictionary<int, FBuilding>();
 }

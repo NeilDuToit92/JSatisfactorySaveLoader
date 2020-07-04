@@ -8,6 +8,6 @@ import za.co.neildutoit.jSatisfactorySaveLoader.game.SaveObjectClass;
 @SaveObjectClass("/Game/FactoryGame/Buildable/Factory/ResourceSink/Build_ResourceSink.Build_ResourceSink_C")
 public class ResourceSink extends FGBuildableFactory {
 
-//        [SaveProperty("mCouponInventory")]
-//    public ObjectReference CouponInventory { get; set; }
+//        @SaveProperty("mCouponInventory")]
+//    public ObjectReference CouponInventory //{ get; set; }
 }

@@ -7,6 +7,6 @@ public class Pipeline extends FGBuildablePipeBase {
   /// <summary>
   ///     Simulation data.
   /// </summary>
-//        [SaveProperty("mFluidBox")]
-//  public FFluidBox FluidBox { get; set; }
+//        @SaveProperty("mFluidBox")]
+//  public FFluidBox FluidBox //{ get; set; }
 }

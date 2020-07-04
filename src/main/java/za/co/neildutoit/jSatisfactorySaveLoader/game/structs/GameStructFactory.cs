@@ -11,12 +11,12 @@ namespace SatisfactorySaveParser.Game.Structs
     {
         private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-        private static readonly HashSet<string> missingTypes = new HashSet<string>();
-        private static readonly Dictionary<string, Type> structTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsDefined(typeof(GameStructAttribute), false))
+        private static readonly HashSet<String> missingTypes = new HashSet<String>();
+        private static readonly Dictionary<String, Type> structTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsDefined(typeof(GameStructAttribute), false))
                 .SelectMany(t => t.GetCustomAttributes<GameStructAttribute>(false).Select(attr => new { Attribute = attr, Type = t }))
                 .ToDictionary(x => x.Attribute.StructName, x => x.Type);
 
-        public static GameStruct CreateFromType(string structName)
+        public static GameStruct CreateFromType(String structName)
         {
             if (!structTypes.TryGetValue(structName, out Type type))
             {

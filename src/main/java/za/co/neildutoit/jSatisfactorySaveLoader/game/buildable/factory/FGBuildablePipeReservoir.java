@@ -7,6 +7,6 @@ public abstract class FGBuildablePipeReservoir extends FGBuildableFactory {
   /// <summary>
   ///     Fluid box used for flow calculations
   /// </summary>
-//        [SaveProperty("mFluidBox")]
-//  public FFluidBox FluidBox { get; set; }
+//        @SaveProperty("mFluidBox")]
+//  public FFluidBox FluidBox //{ get; set; }
 }

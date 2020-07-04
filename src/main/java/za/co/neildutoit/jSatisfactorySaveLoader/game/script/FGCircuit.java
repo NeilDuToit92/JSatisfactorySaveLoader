@@ -9,12 +9,12 @@ public abstract class FGCircuit extends SaveComponent {
   /// <summary>
   ///     The id used to identify this circuit.
   /// </summary>
-//        [SaveProperty("mCircuitID")]
-//  public int CircuitID { get; set; }
+//        @SaveProperty("mCircuitID")]
+//  public int CircuitID //{ get; set; }
 //
 //  /// <summary>
 //  ///     List of all the components (nodes) in this circuit.
 //  /// </summary>
-//        [SaveProperty("mComponents")]
+//        @SaveProperty("mComponents")]
 //  public List<ObjectReference> Components { get; } = new List<ObjectReference>();
 }

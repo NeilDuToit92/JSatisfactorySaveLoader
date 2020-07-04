@@ -8,50 +8,50 @@ public class PlayerState extends SaveActor {
 
 //    private static readonly Logger log = LogManager.GetCurrentClassLogger();
 //
-//        [SaveProperty("mHotbarShortcuts")]
+//        @SaveProperty("mHotbarShortcuts")]
 //    public List<ObjectReference> HotbarShortcuts { get; } = new List<ObjectReference>();
 //
-//        [SaveProperty("mNewRecipes")]
+//        @SaveProperty("mNewRecipes")]
 //    public List<ObjectReference> NewRecipes { get; } = new List<ObjectReference>();
 //
-//        [SaveProperty("mOwnedPawn")]
-//    public ObjectReference OwnedPawn { get; set; }
+//        @SaveProperty("mOwnedPawn")]
+//    public ObjectReference OwnedPawn //{ get; set; }
 //
-//        [SaveProperty("mHasReceivedInitialItems")]
-//    public bool HasReceivedInitialItems { get; set; }
+//        @SaveProperty("mHasReceivedInitialItems")]
+//    public bool HasReceivedInitialItems //{ get; set; }
 //
-//        [SaveProperty("mHasSetupDefaultShortcuts")]
-//    public bool HasSetupDefaultShortcuts { get; set; }
+//        @SaveProperty("mHasSetupDefaultShortcuts")]
+//    public bool HasSetupDefaultShortcuts //{ get; set; }
 //
-//        [SaveProperty("mTutorialSubsystem")]
-//    public ObjectReference TutorialSubsystem { get; set; }
+//        @SaveProperty("mTutorialSubsystem")]
+//    public ObjectReference TutorialSubsystem //{ get; set; }
 //
-//        [SaveProperty("mMessageData")]
+//        @SaveProperty("mMessageData")]
 //    public List<FMessageData> MessageData { get; } = new List<FMessageData>();
 //
-//        [SaveProperty("mRememberedFirstTimeEquipmentClasses")]
+//        @SaveProperty("mRememberedFirstTimeEquipmentClasses")]
 //    public List<ObjectReference> RememberedFirstTimeEquipmentClasses { get; } = new List<ObjectReference>();
 //
-//        [SaveProperty("mNumArmSlots")]
-//    public int NumArmSlots { get; set; }
+//        @SaveProperty("mNumArmSlots")]
+//    public int NumArmSlots //{ get; set; }
 //
-//        [SaveProperty("mOnlyShowAffordableRecipes")]
-//    public bool OnlyShowAffordableRecipes { get; set; }
+//        @SaveProperty("mOnlyShowAffordableRecipes")]
+//    public bool OnlyShowAffordableRecipes //{ get; set; }
 //
-//        [SaveProperty("mCollapsedItemCategories")]
+//        @SaveProperty("mCollapsedItemCategories")]
 //    public List<ObjectReference> CollapsedItemCategories { get; } = new List<ObjectReference>();
 //
-//        [SaveProperty("mFilteredOutMapTypes")]
+//        @SaveProperty("mFilteredOutMapTypes")]
 //    public List<ERepresentationType> FilteredOutMapTypes { get; } = new List<ERepresentationType>();
 //
-//        [SaveProperty("mFilteredOutCompassTypes")]
+//        @SaveProperty("mFilteredOutCompassTypes")]
 //    public List<ERepresentationType> FilteredOutCompassTypes { get; } = new List<ERepresentationType>();
 //
-//        [SaveProperty("mShoppingList")]
+//        @SaveProperty("mShoppingList")]
 //    public List<RecipeAmountStruct> ShoppingList { get; } = new List<RecipeAmountStruct>();
 //
-//        [SaveProperty("mLastSchematicTierInUI")]
-//    public int LastSchematicTierInUI { get; set; }
+//        @SaveProperty("mLastSchematicTierInUI")]
+//    public int LastSchematicTierInUI //{ get; set; }
 //
 //
 //    public byte[] UserID { get; private set; } = Array.Empty<byte>();

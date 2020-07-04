@@ -11,7 +11,7 @@ public enum FSaveCustomVersion {
   /** 2017/01/25 - Change object header, stops storing map name in savefile. Breaks all backward compability */
   DROPPED_ChangeObjectHeader,
 
-  /** 2017/01/30 - Changed serialization of property names to strings instead of ints. Breaks all backward compability  */
+  /** 2017/01/30 - Changed serialization of property names to Strings instead of ints. Breaks all backward compability  */
   DROPPED_PropertyTagsAsStrings,
 
   /** 2017/01/31 - Now store the body state of all vehicles */

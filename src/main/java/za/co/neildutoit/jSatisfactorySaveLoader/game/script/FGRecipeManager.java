@@ -6,6 +6,6 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveActor;
 @SaveObjectClass("/Script/FactoryGame.FGRecipeManager")
 public class FGRecipeManager extends SaveActor {
 
-//        [SaveProperty("mAvailableRecipes")]
+//        @SaveProperty("mAvailableRecipes")]
 //    public List<ObjectReference> AvailableRecipes { get; } = new List<ObjectReference>();
 }

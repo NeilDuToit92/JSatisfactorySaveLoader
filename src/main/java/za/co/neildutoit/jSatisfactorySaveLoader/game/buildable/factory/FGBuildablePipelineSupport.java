@@ -7,12 +7,12 @@ public abstract class FGBuildablePipelineSupport extends FGBuildablePoleBase {
   /// <summary>
   ///     This supports length.
   /// </summary>
-//        [SaveProperty("mLength")]
-//  public float Length { get; set; }
+//        @SaveProperty("mLength")]
+//  public float Length //{ get; set; }
 //
 //  /// <summary>
 //  ///     This supports length.
 //  /// </summary>
-//        [SaveProperty("mVerticalAngle")]
-//  public float VerticalAngle { get; set; }
+//        @SaveProperty("mVerticalAngle")]
+//  public float VerticalAngle //{ get; set; }
 }

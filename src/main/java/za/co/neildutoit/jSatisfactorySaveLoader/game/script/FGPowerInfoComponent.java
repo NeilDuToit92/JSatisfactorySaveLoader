@@ -5,12 +5,12 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveComponent;
 
 @SaveObjectClass("/Script/FactoryGame.FGPowerInfoComponent")
 public class FGPowerInfoComponent extends SaveComponent {
-//  [SaveProperty("mTargetConsumption")]
-//  public float TargetConsumption { get; set; }
+//  @SaveProperty("mTargetConsumption")]
+//  public float TargetConsumption //{ get; set; }
 //
-//        [SaveProperty("mBaseProduction")]
-//  public float BaseProduction { get; set; }
+//        @SaveProperty("mBaseProduction")]
+//  public float BaseProduction //{ get; set; }
 //
-//        [SaveProperty("mDynamicProductionCapacity")]
-//  public float DynamicProductionCapacity { get; set; }
+//        @SaveProperty("mDynamicProductionCapacity")]
+//  public float DynamicProductionCapacity //{ get; set; }
 }

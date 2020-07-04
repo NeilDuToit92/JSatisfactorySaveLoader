@@ -6,12 +6,12 @@ import za.co.neildutoit.jSatisfactorySaveLoader.game.SaveObjectClass;
 public class ResourceDeposit extends FGResourceNode {
 
 
-//        [SaveProperty("mResourceDepositTableIndex")]
-//    public int ResourceDepositTableIndex { get; set; }
+//        @SaveProperty("mResourceDepositTableIndex")]
+//    public int ResourceDepositTableIndex //{ get; set; }
 //
-//        [SaveProperty("mIsEmptied")]
-//    public bool IsEmptied { get; set; }
+//        @SaveProperty("mIsEmptied")]
+//    public bool IsEmptied //{ get; set; }
 //
-//        [SaveProperty("mMineAmount")]
-//    public int MineAmount { get; set; }
+//        @SaveProperty("mMineAmount")]
+//    public int MineAmount //{ get; set; }
 }

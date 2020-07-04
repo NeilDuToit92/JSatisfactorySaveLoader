@@ -8,26 +8,26 @@ public class FGGameMode extends SaveActor {
 //  /// <summary>
 //  ///     Last autosave was this id
 //  /// </summary>
-//        [SaveProperty("mLastAutosaveId")]
-//  public byte LastAutosaveId { get; set; }
+//        @SaveProperty("mLastAutosaveId")]
+//  public byte LastAutosaveId //{ get; set; }
 //
-//        [SaveProperty("mSessionId"), Obsolete("Marked as deprecated in Satisfactory headers")]
-//  public int SessionId_DEPRECATED { get; set; }
+//        @SaveProperty("mSessionId"), Obsolete("Marked as deprecated in Satisfactory headers")]
+//  public int SessionId_DEPRECATED //{ get; set; }
 //
-//        [SaveProperty("mSessionIDString"), Obsolete("Marked as deprecated in Satisfactory headers")]
-//  public string SessionIDString_DEPRECATED { get; set; }
+//        @SaveProperty("mSessionIDString"), Obsolete("Marked as deprecated in Satisfactory headers")]
+//  public String SessionIDString_DEPRECATED //{ get; set; }
 //
 //  /// <summary>
 //  ///     The name of the session we are playing
 //  /// </summary>
-//        [SaveProperty("mSaveSessionName")]
-//  public string SaveSessionName { get; set; }
+//        @SaveProperty("mSaveSessionName")]
+//  public String SaveSessionName //{ get; set; }
 //
 //  /// <summary>
 //  ///     Selected starting point
 //  /// </summary>
-//        [SaveProperty("mStartingPointTagName")]
-//  public string StartingPointTagName { get; set; }
+//        @SaveProperty("mStartingPointTagName")]
+//  public String StartingPointTagName //{ get; set; }
 //
 //  public List<ObjectReference> PlayerStates { get; } = new List<ObjectReference>();
 //
