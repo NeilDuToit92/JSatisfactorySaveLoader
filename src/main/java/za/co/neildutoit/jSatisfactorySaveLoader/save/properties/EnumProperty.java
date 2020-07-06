@@ -1,10 +1,13 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.mutable.MutableInt;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.IEnumPropertyValue;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class EnumProperty extends SerializedProperty implements IEnumPropertyValue {
   public static final String TYPE_NAME = "EnumProperty";
@@ -15,13 +18,14 @@ public class EnumProperty extends SerializedProperty implements IEnumPropertyVal
 
 //public override Type BackingType => typeof(Enum);
 //public override object BackingObject => Value;
+private Field backingObject = this.getClass().getDeclaredField("value");
 
 //public override int SerializedLength => Value.GetSerializedLength();
 
   private String type;
   private String value;
 
-  public EnumProperty(String propertyName, int index) {
+  public EnumProperty(String propertyName, int index) throws NoSuchFieldException {
     super(propertyName, index);
   }
 
@@ -45,12 +49,21 @@ public class EnumProperty extends SerializedProperty implements IEnumPropertyVal
     this.value = value;
   }
 
+  @Override
+  public Field getBackingObject() {
+    return backingObject;
+  }
+
+  public void setBackingObject(Field backingObject) {
+    this.backingObject = backingObject;
+  }
+
   //public override String ToString()
 //    {
 //    return $"Enum {PropertyName}: {Value}";
 //    }
 
-  public static EnumProperty deserialize(BinaryReader reader, String propertyName, int index, MutableInt overhead) throws IOException {
+  public static EnumProperty deserialize(BinaryReader reader, String propertyName, int index, MutableInt overhead) throws IOException, NoSuchFieldException {
     EnumProperty result = new EnumProperty(propertyName, index);
     result.setType(reader.readCharArray().trim());
 
@@ -63,14 +76,17 @@ public class EnumProperty extends SerializedProperty implements IEnumPropertyVal
     return result;
   }
 
-//public override void Serialize(BinaryWriter writer)
+//public void Serialize(BinaryWriter writer)
 //    {
 //    writer.WriteLengthPrefixedString(Type);
 //    writer.Write((byte)0);
 //    writer.WriteLengthPrefixedString(Value);
 //    }
 //
-//public override void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info)
+public void assignToProperty(IPropertyContainer saveObject, Field field) {
+  throw new NotImplementedException();
+}
+//public void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info)
 //    {
 //    if (Type != info.PropertyType.Name)
 //    {

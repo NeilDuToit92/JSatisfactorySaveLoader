@@ -25,7 +25,7 @@ public class FFluidBox extends GameStruct {
     this.unknown = unknown;
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //{
 //  writer.Write(Unknown);
 //}

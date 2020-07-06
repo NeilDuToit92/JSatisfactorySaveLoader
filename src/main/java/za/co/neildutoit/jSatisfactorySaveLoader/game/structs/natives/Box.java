@@ -47,7 +47,7 @@ public class Box extends GameStruct {
     this.unknownByte = reader.readByte();
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //  {
 //    writer.Write(Min);
 //    writer.Write(Max);

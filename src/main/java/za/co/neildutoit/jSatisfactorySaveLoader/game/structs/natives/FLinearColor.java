@@ -56,7 +56,7 @@ public class FLinearColor extends GameStruct {
     this.a = reader.readSingle();
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //{
 //  writer.Write(R);
 //  writer.Write(G);

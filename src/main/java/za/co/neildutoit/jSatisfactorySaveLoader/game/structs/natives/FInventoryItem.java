@@ -24,7 +24,7 @@ public class FInventoryItem extends GameStruct {
     this.unknown3 = reader.readCharArray();
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //  {
 //    writer.Write(Unknown1);
 //    writer.WriteLengthPrefixedString(ItemType);

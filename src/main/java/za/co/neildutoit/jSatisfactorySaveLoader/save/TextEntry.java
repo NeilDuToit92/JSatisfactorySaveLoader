@@ -151,11 +151,11 @@ public abstract class TextEntry {
   /*
         public class ArgumentFormat : IEquatable<ArgumentFormat>
         {
-            public String Name //{ get; set; }
-            public EFormatArgumentType ValueType //{ get; set; }
-            public TextEntry Value //{ get; set; }
+            public String Name;
+            public EFormatArgumentType ValueType;
+            public TextEntry Value;
 
-            public bool Equals(ArgumentFormat other)
+            public boolean Equals(ArgumentFormat other)
             {
                 if (other == null) return false;
 
@@ -163,7 +163,7 @@ public abstract class TextEntry {
                     Value.Equals(other.Value);
             }
 
-            public override bool Equals(object obj)
+            public override boolean Equals(object obj)
             {
                 return Equals(obj as ArgumentFormat);
             }
@@ -179,7 +179,7 @@ public abstract class TextEntry {
             public override ETextHistoryType HistoryType => ETextHistoryType.ArgumentFormat;
             public override int SerializedLength => 0;
 
-            public BaseTextEntry SourceFormat //{ get; set; }
+            public BaseTextEntry SourceFormat;
 
             public List<ArgumentFormat> Arguments { get; } = new List<ArgumentFormat>();
 

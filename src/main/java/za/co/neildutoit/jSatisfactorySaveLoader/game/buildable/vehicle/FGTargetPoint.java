@@ -5,18 +5,18 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveActor;
 
 @SaveObjectClass("/Game/FactoryGame/Buildable/Vehicle/BP_VehicleTargetPoint.BP_VehicleTargetPoint_C")
 public class FGTargetPoint extends SaveActor {
-//  @SaveProperty("mNext")]
-//  public ObjectReference Next //{ get; set; }
+//  @SaveProperty("mNext")
+//  public ObjectReference Next;
 //
-//        @SaveProperty("mOwningVehicle")]
-//  public ObjectReference OwningVehicle //{ get; set; }
+//        @SaveProperty("mOwningVehicle")
+//  public ObjectReference OwningVehicle;
 //
-//        @SaveProperty("mIsVisible")]
-//  public bool IsVisible //{ get; set; }
+//        @SaveProperty("mIsVisible")
+//  public boolean IsVisible;
 //
-//        @SaveProperty("mWaitTime")]
-//  public float WaitTime //{ get; set; }
+//        @SaveProperty("mWaitTime")
+//  public float WaitTime;
 //
-//        @SaveProperty("mTargetSpeed")]
-//  public int TargetSpeed //{ get; set; }
+//        @SaveProperty("mTargetSpeed")
+//  public int TargetSpeed;
 }

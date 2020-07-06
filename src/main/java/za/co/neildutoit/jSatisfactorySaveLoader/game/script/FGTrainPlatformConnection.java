@@ -5,15 +5,15 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveComponent;
 
 @SaveObjectClass("/Script/FactoryGame.FGTrainPlatformConnection")
 public class FGTrainPlatformConnection extends SaveComponent {
-//   @SaveProperty("mComponentDirection")]
-//  public bool ComponentDirection //{ get; set; }
+//   @SaveProperty("mComponentDirection")
+//  public boolean ComponentDirection;
 //
-//        @SaveProperty("platformOwner")]
-//  public ObjectReference PlatformOwner //{ get; set; }
+//        @SaveProperty("platformOwner")
+//  public ObjectReference PlatformOwner;
 //
-//        @SaveProperty("mRailroadTrackConnection")]
-//  public ObjectReference RailroadTrackConnection //{ get; set; }
+//        @SaveProperty("mRailroadTrackConnection")
+//  public ObjectReference RailroadTrackConnection;
 //
-//        @SaveProperty("mConnectedTo")]
-//  public ObjectReference ConnectedTo //{ get; set; }
+//        @SaveProperty("mConnectedTo")
+//  public ObjectReference ConnectedTo;
 }

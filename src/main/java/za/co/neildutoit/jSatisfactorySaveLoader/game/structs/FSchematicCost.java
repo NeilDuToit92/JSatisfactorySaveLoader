@@ -7,9 +7,9 @@ public class FSchematicCost extends GameStruct
 {
 //  public override String StructName => "SchematicCost";
 //
-//        [StructProperty("Schematic")]
-//  public ObjectReference Schematic //{ get; set; }
+//        @StructPropertyAttr("Schematic")
+//  public ObjectReference Schematic;
 //
-//        [StructProperty("ItemCost")]
+//        @StructPropertyAttr("ItemCost")
 //  public List<FItemAmount> ItemCost { get; } = new List<FItemAmount>();
 }

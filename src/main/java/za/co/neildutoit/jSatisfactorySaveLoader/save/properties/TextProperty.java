@@ -6,6 +6,7 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.ITextPropertyValue;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class TextProperty extends SerializedProperty implements ITextPropertyValue {
@@ -15,6 +16,7 @@ public class TextProperty extends SerializedProperty implements ITextPropertyVal
 
 //  public override Type BackingType => typeof(TextEntry);
 //  public override object BackingObject => Text;
+private Field backingObject = this.getClass().getDeclaredField("text");
 
 //  public  int SerializedLength => 5 + Text.SerializedLength;
 
@@ -25,7 +27,7 @@ public class TextProperty extends SerializedProperty implements ITextPropertyVal
 
   private TextEntry text;
 
-  public TextProperty(String propertyName, int index) {
+  public TextProperty(String propertyName, int index) throws NoSuchFieldException {
     super(propertyName, index);
   }
 
@@ -37,7 +39,12 @@ public class TextProperty extends SerializedProperty implements ITextPropertyVal
     this.text = text;
   }
 
-//  public override String ToString()
+  @Override
+  public Field getBackingObject() {
+    return backingObject;
+  }
+
+  //  public override String ToString()
 //{
 //  return $"Text {PropertyName}: {Text}";
 //}
@@ -66,10 +73,10 @@ public class TextProperty extends SerializedProperty implements ITextPropertyVal
 //          SourceFormat = (BaseTextEntry)ParseTextEntry(reader)
 //        };
 //
-//        var count = reader.ReadInt32();
-//        for (var i = 0; i < count; i++)
+//        int count = reader.readInt32();
+//        for (int i = 0; i < count; i++)
 //        {
-//          result.Arguments.Add(new ArgumentFormat()
+//          result.Arguments.add(new ArgumentFormat()
 //          {
 //            Name = reader.ReadLengthPrefixedString(),
 //            ValueType = (EFormatArgumentType)reader.ReadByte(),
@@ -88,7 +95,7 @@ public class TextProperty extends SerializedProperty implements ITextPropertyVal
     }
   }
 
-  public static TextProperty deserialize(BinaryReader reader, String propertyName, int index) throws IOException {
+  public static TextProperty deserialize(BinaryReader reader, String propertyName, int index) throws IOException, NoSuchFieldException {
     TextProperty result = new TextProperty(propertyName, index);
 
     reader.assertNullByte();
@@ -97,7 +104,7 @@ public class TextProperty extends SerializedProperty implements ITextPropertyVal
     return result;
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //{
 //  writer.Write((byte)0);
 //  writer.Write(Text.Flags);

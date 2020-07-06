@@ -11,8 +11,7 @@ import java.beans.IntrospectionException;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
@@ -124,6 +123,25 @@ public class SatisfactorySaveSerializer {
     incrementDeserializationStage(SerializerStage.Done);
     updateDeserializationProgress(0, -1);
 //    log.Info($"Parsing save took {sw.ElapsedMilliseconds / 1000f}s");
+
+    for (String missingProperty : missingProperties)
+    {
+      System.out.println("Missing: " + missingProperty);
+    }
+
+     Map<String, List<SaveObject>> itemsByGroup = new TreeMap<>();
+
+    for (SaveObject saveObject :save.getObjects())
+    {
+      String className = saveObject.getClass().getTypeName();
+      List<SaveObject> objects = new ArrayList<>();
+      if (itemsByGroup.containsKey(className))
+      {
+        objects = itemsByGroup.get(className);
+      }
+      objects.add(saveObject);
+      itemsByGroup.put(className, objects);
+    }
 
     return save;
   }
@@ -332,12 +350,16 @@ public class SatisfactorySaveSerializer {
 //      throw new FatalSaveException($"Expected {dataLength} bytes read but got {after - before}", before);
   }
 
-  public static SerializedProperty deserializeProperty(BinaryReader reader) throws IOException, IllegalAccessException, InstantiationException, NoSuchFieldException {
+  public static SerializedProperty deserializeProperty(BinaryReader reader) throws IOException, IllegalAccessException, InstantiationException, NoSuchFieldException, IntrospectionException, InvocationTargetException {
     SerializedProperty result;
 
-    String propertyName = reader.readCharArray();
-    if (propertyName.trim().equals("None")) {
+    String propertyName = reader.readCharArray().trim();
+    if (propertyName.equals("None")) {
       return null;
+    }
+    if (propertyName.equals("mStorageInventory"))
+    {
+//      System.out.println("");
     }
 
 //    TODO: Trace.Assert(!String.IsNullOrEmpty(propertyName));

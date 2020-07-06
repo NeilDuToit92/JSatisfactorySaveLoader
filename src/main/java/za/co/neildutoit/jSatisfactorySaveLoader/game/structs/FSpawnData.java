@@ -1,6 +1,7 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.game.structs;
 
 import za.co.neildutoit.jSatisfactorySaveLoader.game.GameStructAttr;
+import za.co.neildutoit.jSatisfactorySaveLoader.game.StructPropertyAttr;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.natives.FVector;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.ObjectReference;
 
@@ -8,22 +9,22 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.ObjectReference;
 public class FSpawnData extends GameStruct {
 //  public override String StructName => "SpawnData";
 
-  //        [StructProperty("SpawnLocation")]
+  @StructPropertyAttr("SpawnLocation")
   private FVector spawnLocation;
 
-  //        [StructProperty("Creature")]
+  @StructPropertyAttr("Creature")
   private ObjectReference creature;
 
-  //        [StructProperty("WasKilled")]
+  @StructPropertyAttr("WasKilled")
   private boolean wasKilled;
 
-  //        [StructProperty("KilledOnDayNr")]
+  @StructPropertyAttr("KilledOnDayNr")
   private int killedOnDayNr;
 
-  //        [StructProperty("CreatureClassOverride")]
+  @StructPropertyAttr("CreatureClassOverride")
   private ObjectReference creatureClassOverride;
 
-  //        [StructProperty("SpawnWeight")]
+  @StructPropertyAttr("SpawnWeight")
   private float spawnWeight;
 
   public FVector getSpawnLocation() {

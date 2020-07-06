@@ -29,7 +29,7 @@ public class FQuat extends GameStruct {
 
 
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //  {
 //    writer.Write(Data);
 //  }

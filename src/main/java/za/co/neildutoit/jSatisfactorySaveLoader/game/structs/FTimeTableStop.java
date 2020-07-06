@@ -7,9 +7,9 @@ public class FTimeTableStop extends GameStruct
 {
 //  public override String StructName => "TimeTableStop";
 //
-//        [StructProperty("Station")]
-//  public ObjectReference Station //{ get; set; }
+//        @StructPropertyAttr("Station")
+//  public ObjectReference Station;
 //
-//        [StructProperty("Duration")]
-//  public float Duration //{ get; set; }
+//        @StructPropertyAttr("Duration")
+//  public float Duration;
 }

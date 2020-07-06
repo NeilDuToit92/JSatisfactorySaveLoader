@@ -1,16 +1,17 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.game.structs;
 
 import za.co.neildutoit.jSatisfactorySaveLoader.game.GameStructAttr;
+import za.co.neildutoit.jSatisfactorySaveLoader.game.StructPropertyAttr;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.natives.FInventoryItem;
 
 @GameStructAttr("InventoryStack")
 public class FInventoryStack extends GameStruct {
 //  public override String StructName => "InventoryStack";
 
-  //        [StructProperty("Item")]
+  @StructPropertyAttr("Item")
   private FInventoryItem item;
 
-  //        [StructProperty("NumItems")]
+  @StructPropertyAttr("NumItems")
   private int numItems;
 
   public FInventoryItem getItem() {

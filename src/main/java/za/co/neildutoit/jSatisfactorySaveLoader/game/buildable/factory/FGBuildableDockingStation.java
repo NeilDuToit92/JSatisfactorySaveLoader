@@ -1,21 +1,21 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.game.buildable.factory;
 
 public abstract class FGBuildableDockingStation extends FGBuildableFactory {
-//   @SaveProperty("mInventory")]
-//  public ObjectReference Inventory //{ get; set; }
+//   @SaveProperty("mInventory")
+//  public ObjectReference Inventory;
 //
-//        @SaveProperty("mFuelInventory")]
-//  public ObjectReference FuelInventory //{ get; set; }
+//        @SaveProperty("mFuelInventory")
+//  public ObjectReference FuelInventory;
 //
-//        @SaveProperty("mDockedActor")]
-//  public ObjectReference DockedActor //{ get; set; }
+//        @SaveProperty("mDockedActor")
+//  public ObjectReference DockedActor;
 //
-//        @SaveProperty("mHasDockedActor")]
-//  public bool HasDockedActor //{ get; set; }
+//        @SaveProperty("mHasDockedActor")
+//  public boolean HasDockedActor;
 //
-//        @SaveProperty("mIsInLoadMode")]
-//  public bool IsInLoadMode //{ get; set; }
+//        @SaveProperty("mIsInLoadMode")
+//  public boolean IsInLoadMode;
 //
-//        @SaveProperty("mIsLoadUnloading")]
-//  public bool IsLoadUnloading //{ get; set; }
+//        @SaveProperty("mIsLoadUnloading")
+//  public boolean IsLoadUnloading;
 }

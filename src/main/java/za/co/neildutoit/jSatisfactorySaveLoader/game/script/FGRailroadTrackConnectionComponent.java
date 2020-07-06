@@ -4,9 +4,9 @@ import za.co.neildutoit.jSatisfactorySaveLoader.game.SaveObjectClass;
 
 @SaveObjectClass("/Script/FactoryGame.FGRailroadTrackConnectionComponent")
 public class FGRailroadTrackConnectionComponent extends FGConnectionComponent {
-//   @SaveProperty("mConnectedComponents")]
+//   @SaveProperty("mConnectedComponents")
 //  public List<ObjectReference> ConnectedComponents { get; } = new List<ObjectReference>();
 //
-//        @SaveProperty("mSwitchPosition")]
-//  public int SwitchPosition //{ get; set; }
+//        @SaveProperty("mSwitchPosition")
+//  public int SwitchPosition;
 }

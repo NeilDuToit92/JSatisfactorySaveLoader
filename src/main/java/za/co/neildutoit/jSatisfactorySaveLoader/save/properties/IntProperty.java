@@ -50,7 +50,7 @@ public class IntProperty extends SerializedProperty implements IIntPropertyValue
     return result;
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //  {
 //    writer.Write((byte)0);
 //    writer.Write(Value);

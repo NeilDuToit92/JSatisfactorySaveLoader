@@ -1,10 +1,13 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.mutable.MutableInt;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.IBytePropertyValue;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class ByteProperty extends SerializedProperty implements IBytePropertyValue {
   public static final String TYPE_NAME = "ByteProperty";
@@ -15,6 +18,7 @@ public class ByteProperty extends SerializedProperty implements IBytePropertyVal
 
 //public override Type BackingType => typeof(object);
 //public override object BackingObject => null;
+private Field backingObject = null;
 
 //public override int SerializedLength => EnumType == "None" ? 1 : EnumValue.GetSerializedLength();
   /**
@@ -80,6 +84,15 @@ public class ByteProperty extends SerializedProperty implements IBytePropertyVal
     isEnum = anEnum;
   }
 
+  @Override
+  public Field getBackingObject() {
+    return backingObject;
+  }
+
+  public void setBackingObject(Field backingObject) {
+    this.backingObject = backingObject;
+  }
+
   //  public override String
 //
 //  ToString() {
@@ -118,6 +131,9 @@ public class ByteProperty extends SerializedProperty implements IBytePropertyVal
 //
 //  public override
 //
+public void assignToProperty(IPropertyContainer saveObject, Field field) {
+  throw new NotImplementedException();
+}
 //  void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info) {
 //    if (IsEnum) {
 //      if (!info.PropertyType.IsGenericType || info.PropertyType.GetGenericTypeDefinition() != typeof(EnumAsByte < >))

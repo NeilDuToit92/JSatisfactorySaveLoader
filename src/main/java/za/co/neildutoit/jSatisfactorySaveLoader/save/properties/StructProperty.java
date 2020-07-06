@@ -11,6 +11,8 @@ import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 
 public class StructProperty extends SerializedProperty implements IStructPropertyValue {
   //  private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -96,7 +98,7 @@ public class StructProperty extends SerializedProperty implements IStructPropert
 //    return $"Struct {PropertyName}";
 //  }
 
-  public static StructProperty deserialize(BinaryReader reader, String propertyName, int size, int index, MutableInt overhead) throws IOException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+  public static StructProperty deserialize(BinaryReader reader, String propertyName, int size, int index, MutableInt overhead) throws IOException, InstantiationException, IllegalAccessException, NoSuchFieldException, IntrospectionException, InvocationTargetException {
     StructProperty result = new StructProperty(propertyName, index);
     String structType = reader.readCharArray().trim();
     overhead.setValue(structType.trim().length() + 22);
@@ -121,20 +123,22 @@ public class StructProperty extends SerializedProperty implements IStructPropert
     return result;
   }
 
-  //  public override void Serialize(BinaryWriter writer)
+  //  public void Serialize(BinaryWriter writer)
 //  {
 //    throw new NotImplementedException();
 //  }
 
-//  public void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info)
   public void assignToProperty(IPropertyContainer saveObject, Field field) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
-    if (field.getType().isArray() && data.getClass().getTypeName().equals(field.getType().getTypeName())) {
-      Object array = getFieldValue(saveObject, field);
-//      var array = (Array)info.GetValue(saveObject);
-//      array.SetValue(Data, Index);
+    if (field.getType().isArray() && data.getClass().getTypeName().equals(field.getType().getTypeName().replace("[]", ""))) {
+      Object[] array = (Object[])getFieldValue(saveObject, field);
+      array = Arrays.copyOf(array, array.length + 1); //create new array from old array and allocate one more element
+      array[array.length - 1] = data;
+      setFieldValue(saveObject, field, array);
       return;
     }
 
+    String typeName1 = field.getType().getTypeName();
+    String typeName2 = data.getClass().getTypeName();
     if (data == null || !field.getType().getTypeName().equals(data.getClass().getTypeName()))
     {
 //      log.Error($"Attempted to assign {PropertyType} {PropertyName} to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");

@@ -5,20 +5,22 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.IObjectPropertyValue;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class ObjectProperty extends SerializedProperty implements IObjectPropertyValue {
   public static final String TYPE_NAME = "ObjectProperty";
 //    public const String TypeName = nameof(ObjectProperty);
 //    public override String PropertyType => TypeName;
 
-//    public override Type BackingType => typeof(ObjectReference);
+  //    public override Type BackingType => typeof(ObjectReference);
 //    public override object BackingObject => Reference;
+  private Field backingObject = this.getClass().getDeclaredField("reference");
 
 //    public override int SerializedLength => Reference.SerializedLength;
 
   private ObjectReference reference;
 
-  public ObjectProperty(String propertyName, int index) {
+  public ObjectProperty(String propertyName, int index) throws NoSuchFieldException {
     super(propertyName, index);
   }
 
@@ -30,12 +32,17 @@ public class ObjectProperty extends SerializedProperty implements IObjectPropert
     this.reference = reference;
   }
 
+  @Override
+  public Field getBackingObject() {
+    return backingObject;
+  }
+
   //    public override String ToString()
 //        {
 //        return $"Object {PropertyName}: {Reference}";
 //        }
 
-  public static ObjectProperty deserialize(BinaryReader reader, String propertyName, int index) throws IOException {
+  public static ObjectProperty deserialize(BinaryReader reader, String propertyName, int index) throws IOException, NoSuchFieldException {
     ObjectProperty result = new ObjectProperty(propertyName, index);
 
     reader.assertNullByte();
@@ -44,7 +51,7 @@ public class ObjectProperty extends SerializedProperty implements IObjectPropert
     return result;
   }
 
-//    public override void Serialize(BinaryWriter writer)
+//    public void Serialize(BinaryWriter writer)
 //        {
 //        writer.Write((byte)0);
 //        writer.Write(Reference);

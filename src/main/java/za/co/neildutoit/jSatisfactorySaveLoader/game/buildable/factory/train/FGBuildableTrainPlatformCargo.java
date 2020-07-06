@@ -1,21 +1,21 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.game.buildable.factory.train;
 
 public abstract class FGBuildableTrainPlatformCargo extends FGBuildableTrainPlatform {
-//  @SaveProperty("mInventory")]
-//  public ObjectReference Inventory //{ get; set; }
+//  @SaveProperty("mInventory")
+//  public ObjectReference Inventory;
 //
-//        @SaveProperty("mHasDockedActor")]
-//  public bool HasDockedActor //{ get; set; }
+//        @SaveProperty("mHasDockedActor")
+//  public boolean HasDockedActor;
 //
-//        @SaveProperty("mIsInLoadMode")]
-//  public bool IsInLoadMode //{ get; set; }
+//        @SaveProperty("mIsInLoadMode")
+//  public boolean IsInLoadMode;
 //
-//        @SaveProperty("mIsLoadUnloading")]
-//  public bool IsLoadUnloading //{ get; set; }
+//        @SaveProperty("mIsLoadUnloading")
+//  public boolean IsLoadUnloading;
 //
-//        @SaveProperty("mShouldExecuteLoadOrUnload")]
-//  public bool ShouldExecuteLoadOrUnload //{ get; set; }
+//        @SaveProperty("mShouldExecuteLoadOrUnload")
+//  public boolean ShouldExecuteLoadOrUnload;
 //
-//        @SaveProperty("mTrackPosition")]
-//  public FRailroadTrackPosition TrackPosition //{ get; set; }
+//        @SaveProperty("mTrackPosition")
+//  public FRailroadTrackPosition TrackPosition;
 }

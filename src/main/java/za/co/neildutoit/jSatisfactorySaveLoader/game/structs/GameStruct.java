@@ -6,7 +6,10 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.Wrapper;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.SatisfactorySaveSerializer;
 
+import java.beans.IntrospectionException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +25,9 @@ public class GameStruct implements IPropertyContainer {
 //  public virtual int SerializedLength => 0;
 //  public abstract String StructName { get; }
 //
-//  /// <summary>
+//
 //  ///     Fallback list of properties that had no matching class property
-//  /// </summary>
+//
 //  public ReadOnlyCollection<SerializedProperty> DynamicProperties => dynamicProperties?.AsReadOnly();
 //
   public void addDynamicProperty(SerializedProperty prop)
@@ -35,17 +38,17 @@ public class GameStruct implements IPropertyContainer {
     dynamicProperties.add(prop);
   }
 
-  public void deserialize(BinaryReader reader) throws IllegalAccessException, IOException, InstantiationException, NoSuchFieldException {
+  public void deserialize(BinaryReader reader) throws IllegalAccessException, IOException, InstantiationException, NoSuchFieldException, IntrospectionException, InvocationTargetException {
     SerializedProperty prop;
     while ((prop = SatisfactorySaveSerializer.deserializeProperty(reader)) != null)
     {
       //TODO: @NDT - need to do mapping here
-      Wrapper wrapper = prop.getMatchingStructProperty(this.getClass().getTypeName());
+      Field field = prop.getMatchingStructProperty(this.getClass());
 
-      if (wrapper.getProperty() == null)
+      if (field == null)
       {
-//        if (GetType() != typeof(DynamicGameStruct))
-//        {
+        if (this.getClass() == DynamicGameStruct.class)
+        {
 //          var propertyUniqueName = $"{GetType().Name}.{prop.PropertyName}:{prop.PropertyType}";
 //          if (!missingProperties.Contains(propertyUniqueName))
 //          {
@@ -54,15 +57,15 @@ public class GameStruct implements IPropertyContainer {
 //                            else
 //            log.Warn($"Missing property for {prop.PropertyType} {prop.PropertyName} on struct {GetType().Name}");
 //
-//            missingProperties.Add(propertyUniqueName);
+//            missingProperties.add(propertyUniqueName);
 //          }
-//        }
-//
-//        AddDynamicProperty(prop);
-//        continue;
+        }
+
+        addDynamicProperty(prop);
+        continue;
       }
 //
-//      prop.AssignToProperty(this, objProperty);
+      prop.assignToProperty(this, field);
     }
   }
 //

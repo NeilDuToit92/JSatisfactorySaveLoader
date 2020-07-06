@@ -5,36 +5,36 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveActor;
 
 @SaveObjectClass("/Script/FactoryGame.FGTrain")
 public class FGTrain extends SaveActor {
-  /// <summary>
+
   ///     Physics simulation for the train
-  /// </summary>
-//        @SaveProperty("mSimulationData")]
-//  public FTrainSimulationData SimulationData //{ get; set; }
+
+//        @SaveProperty("mSimulationData")
+//  public FTrainSimulationData SimulationData;
 //
-//  /// <summary>
+//
 //  ///     The name of this train.
-//  /// </summary>
-//        @SaveProperty("mTrainName")]
-//  public TextEntry TrainName //{ get; set; }
 //
-//  /// <summary>
+//        @SaveProperty("mTrainName")
+//  public TextEntry TrainName;
+//
+//
 //  ///     Train are a doubly linked list, use TTrainIterator to iterate over a train.
-//  /// </summary>
-//        @SaveProperty("FirstVehicle")]
-//  public ObjectReference FirstVehicle //{ get; set; }
 //
-//        @SaveProperty("LastVehicle")]
-//  public ObjectReference LastVehicle //{ get; set; }
+//        @SaveProperty("FirstVehicle")
+//  public ObjectReference FirstVehicle;
 //
-//  /// <summary>
+//        @SaveProperty("LastVehicle")
+//  public ObjectReference LastVehicle;
+//
+//
 //  ///     This trains time table.
-//  /// </summary>
-//        @SaveProperty("TimeTable")]
-//  public ObjectReference TimeTable //{ get; set; }
 //
-//  /// <summary>
+//        @SaveProperty("TimeTable")
+//  public ObjectReference TimeTable;
+//
+//
 //  ///     Is this train self driving
-//  /// </summary>
-//        @SaveProperty("mIsSelfDrivingEnabled")]
-//  public bool IsSelfDrivingEnabled //{ get; set; }
+//
+//        @SaveProperty("mIsSelfDrivingEnabled")
+//  public boolean IsSelfDrivingEnabled;
 }

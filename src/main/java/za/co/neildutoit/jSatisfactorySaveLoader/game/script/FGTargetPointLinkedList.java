@@ -5,12 +5,12 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveComponent;
 
 @SaveObjectClass("/Script/FactoryGame.FGTargetPointLinkedList")
 public class FGTargetPointLinkedList extends SaveComponent {
-//  @SaveProperty("mFirst")]
-//  public ObjectReference First //{ get; set; }
+//  @SaveProperty("mFirst")
+//  public ObjectReference First;
 //
-//        @SaveProperty("mLast")]
-//  public ObjectReference Last //{ get; set; }
+//        @SaveProperty("mLast")
+//  public ObjectReference Last;
 //
-//        @SaveProperty("mCurrentTarget")]
-//  public ObjectReference CurrentTarget //{ get; set; }
+//        @SaveProperty("mCurrentTarget")
+//  public ObjectReference CurrentTarget;
 }

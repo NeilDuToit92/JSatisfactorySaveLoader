@@ -53,7 +53,7 @@ public class NameProperty extends SerializedProperty implements INamePropertyVal
     return backingObject;
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //{
 //  writer.Write((byte)0);
 //  writer.WriteLengthPrefixedString(Value);

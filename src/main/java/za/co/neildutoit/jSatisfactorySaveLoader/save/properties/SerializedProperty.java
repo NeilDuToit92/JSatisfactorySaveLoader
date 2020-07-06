@@ -1,16 +1,14 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 
 import za.co.neildutoit.jSatisfactorySaveLoader.game.SaveProperty;
+import za.co.neildutoit.jSatisfactorySaveLoader.game.StructPropertyAttr;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SerializedProperty {
   //  private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -63,9 +61,9 @@ public class SerializedProperty {
   }
 
   //
-//  /// <summary>
+//
 //  ///
-//  /// </summary>
+//
 //  /// <param name="target"></param>
 //  /// <returns></returns>
 //  public (PropertyInfo Property, SavePropertyAttribute Attribute) GetMatchingSaveProperty(Type targetType)
@@ -78,12 +76,15 @@ public class SerializedProperty {
    */
   public Field getMatchingSaveProperty(Class<?> targetType) {
     Field retField = null;
+    if (getPropertyName().equals("mStorageInventory")) {
+      System.out.println("");
+    }
     if (propertyCache.containsKey(targetType.getTypeName() + ":" + getPropertyName())) {
       retField = propertyCache.get(targetType.getTypeName() + ":" + getPropertyName());
     } else {
       List<Field> fields = new ArrayList<>();
       //Filter annotations
-      for (Field field : targetType.getDeclaredFields()) {
+      for (Field field : getAllFields(targetType)) {
         if (field.isAnnotationPresent(SaveProperty.class)) {
           fields.add(field);
         }
@@ -101,34 +102,59 @@ public class SerializedProperty {
     return retField;
   }
 
-//  /// <summary>
+  private static List<Field> getAllFields(Class<?> type) {
+    return getAllFields(new ArrayList<>(), type);
+  }
+
+  private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
+    fields.addAll(Arrays.asList(type.getDeclaredFields()));
+
+    if (type.getSuperclass() != null) {
+      getAllFields(fields, type.getSuperclass());
+    }
+
+    return fields;
+  }
+
+//
 //  ///     Attempts to find a matching struct property for this serialized property. Returns null if one can't be found.
-//  /// </summary>
+//
 //  /// <param name="target"></param>
 //  /// <returns></returns>
 
   /**
    * Attempts to find a matching struct property for this serialized property. Returns null if one can't be found.
    */
-  //TODO: @NDT
-  public Wrapper getMatchingStructProperty(String targetType) {
-    Wrapper wrapper = new Wrapper();
-    if (targetType.equals("DynamicGameStruct"))
-      return wrapper;
-//TODO: issues here
-//    if (!propertyCache.TryGetValue((targetType, PropertyName), out (PropertyInfo Property, Attribute Attribute) found))
-//    {
-//      found = targetType.GetProperties()
-//          //.Where(p => Attribute.IsDefined(p, typeof(SavePropertyAttribute)))
-//          .Select(p => (Property: p, Attribute: p.GetCustomAttributes(typeof(StructPropertyAttribute), false).FirstOrDefault() as StructPropertyAttribute))
-//                    .SingleOrDefault(p => p.Attribute != null && p.Attribute.Name == PropertyName);
-//
-//      propertyCache[(targetType, PropertyName)] = found;
-//    }
-//
-//    return (found.Property, (StructPropertyAttribute)found.Attribute);
+    public Field getMatchingStructProperty(Class<?> targetType) {
+      Field retField = null;
 
-    return wrapper;
+      if (propertyCache.containsKey(targetType.getTypeName() + ":" + getPropertyName())) {
+        retField = propertyCache.get(targetType.getTypeName() + ":" + getPropertyName());
+      } else {
+        List<Field> fields = new ArrayList<>();
+        //Filter annotations
+        for (Field field : getAllFields(targetType)) {
+          if (field.isAnnotationPresent(StructPropertyAttr.class)) {
+            fields.add(field);
+          }
+        }
+
+        for (Field field : fields) {
+          if (getPropertyName().equals(field.getAnnotation(StructPropertyAttr.class).value())) {
+            retField = field;
+            break;
+          }
+        }
+
+        propertyCache.put(targetType.getTypeName() + ":" + getPropertyName(), retField);
+      }
+
+      if (retField == null)
+      {
+        System.out.println("getMatchingStructProperty returning null: TypeName: " +  targetType.getTypeName() + " Property Name: " + getPropertyName());
+      }
+
+    return retField;
   }
 
   public void assignToProperty(IPropertyContainer saveObject, Field field) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
@@ -161,13 +187,23 @@ public class SerializedProperty {
     return pd.getReadMethod().invoke(saveObject);
   }
 
-  protected void setFieldValue(IPropertyContainer saveObject, Field field, Object value) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-    PropertyDescriptor pd = new PropertyDescriptor(field.getName(), saveObject.getClass());
+  protected void setFieldValue(IPropertyContainer saveObject, Field field, Object value) throws InvocationTargetException, IllegalAccessException {
+    PropertyDescriptor pd = null;
+    try {
+      pd = new PropertyDescriptor(field.getName(), saveObject.getClass());
+    } catch (IntrospectionException e) {
+      e.printStackTrace();
+    }
     pd.getWriteMethod().invoke(saveObject, value);
   }
 
-  private Object getBackingObjectValue() throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-    PropertyDescriptor pd = new PropertyDescriptor(getBackingObject().getName(), this.getClass());
+  private Object getBackingObjectValue() throws InvocationTargetException, IllegalAccessException {
+    PropertyDescriptor pd = null;
+    try {
+      pd = new PropertyDescriptor(getBackingObject().getName(), this.getClass());
+    } catch (IntrospectionException e) {
+      e.printStackTrace();
+    }
     return pd.getReadMethod().invoke(this);
   }
 

@@ -1,38 +1,48 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.mutable.MutableInt;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.GameStruct;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.GameStructFactory;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.*;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.arrayValues.*;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayProperty extends SerializedProperty {
   public static final String TYPE_NAME = "ArrayProperty";
-//  private static readonly Logger log = LogManager.GetCurrentClassLogger();
+  //  private static readonly Logger log = LogManager.GetCurrentClassLogger();
 //
 //  public const String TypeName = nameof(ArrayProperty);
 //  public override String PropertyType => TypeName;
 //
 //  public override Type BackingType => typeof(List<IArrayElement>);
 //  public override object BackingObject => Elements;
+  private Field backingObject = this.getClass().getDeclaredField("elements");
 //
 //  public override int SerializedLength => 0;
 
   /**
    * String representation of the Property type this array consists of
    */
-  public String type;
+  private String type;
 
   /**
    * Actual content of the array
    */
-  public List<IArrayElement> elements = new ArrayList<IArrayElement>();
+  private List<IArrayElement> elements = new ArrayList<IArrayElement>();
 
-  public ArrayProperty(String propertyName, int index) {
+  public ArrayProperty(String propertyName, int index) throws NoSuchFieldException {
     super(propertyName, index);
   }
 
@@ -48,7 +58,20 @@ public class ArrayProperty extends SerializedProperty {
     return elements;
   }
 
-  public static ArrayProperty parse(BinaryReader reader, String propertyName, int index, MutableInt overhead) throws IOException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+  public void setElements(List<IArrayElement> elements) {
+    this.elements = elements;
+  }
+
+  @Override
+  public Field getBackingObject() {
+    return backingObject;
+  }
+
+  public void setBackingObject(Field backingObject) {
+    this.backingObject = backingObject;
+  }
+
+  public static ArrayProperty parse(BinaryReader reader, String propertyName, int index, MutableInt overhead) throws IOException, InstantiationException, IllegalAccessException, NoSuchFieldException, IntrospectionException, InvocationTargetException {
     ArrayProperty result = new ArrayProperty(propertyName, index);
     result.setType(reader.readCharArray().trim());
     reader.assertNullByte();
@@ -169,21 +192,26 @@ public class ArrayProperty extends SerializedProperty {
     return result;
   }
 
-//  public override void Serialize(BinaryWriter writer)
+  //  public void Serialize(BinaryWriter writer)
 //  {
 //    throw new NotImplementedException();
 //  }
 //
-//  public override void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info)
-//  {
-//    if (info.PropertyType.GetGenericTypeDefinition() != typeof(List<>))
-//    {
-//      log.Error($"Attempted to assign array {PropertyName} to non list field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
-//      saveObject.AddDynamicProperty(this);
-//      return;
-//    }
-//
-//    var propertyType = info.PropertyType.GetGenericArguments()[0];
+  public void assignToProperty(IPropertyContainer saveObject, Field field) throws InvocationTargetException, IllegalAccessException, IntrospectionException {
+
+    //TODO: @NDT Check if this coeers all scenarios
+    if (field.getType() != List.class && !field.getType().isArray())
+    {
+//      System.out.println("Attempted to assign array {PropertyName} to non list field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
+      System.out.println("Attempted to assign array {PropertyName} to non list field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
+      saveObject.addDynamicProperty(this);
+      return;
+    }
+
+    ParameterizedType stringListType = (ParameterizedType) field.getGenericType();
+    Type propertyType = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+
+    //TODO: @NDT mismatchedType not implemented
 //    var mismatchedType = Elements.FirstOrDefault(e => !e.BackingType.IsAssignableFrom(propertyType));
 //    if (mismatchedType != null)
 //    {
@@ -191,70 +219,81 @@ public class ArrayProperty extends SerializedProperty {
 //      saveObject.AddDynamicProperty(this);
 //      return;
 //    }
-//
+
 //    var list = info.GetValue(saveObject);
 //    var addMethod = info.PropertyType.GetMethod(nameof(List<object>.Add));
-//
-//    switch (Type)
-//    {
-//      case ByteProperty.TypeName:
-//      {
-//        foreach (var obj in Elements.Cast<IBytePropertyValue>())
-//        {
-//          addMethod.Invoke(list, new[] { (object)obj.ByteValue });
-//        }
-//      }
-//      break;
-//
-//      case EnumProperty.TypeName:
-//      {
-//        // TODO: add assigning of enums
-//        saveObject.AddDynamicProperty(this);
-//      }
-//      break;
-//
-//      case IntProperty.TypeName:
-//      {
-//        foreach (var prop in Elements.Cast<IIntPropertyValue>())
-//        {
-//          addMethod.Invoke(list, new[] { (object)prop.Value });
-//        }
-//      }
-//      break;
-//
-//      case ObjectProperty.TypeName:
-//      {
-//        foreach (var obj in Elements.Cast<IObjectPropertyValue>())
-//        {
-//          addMethod.Invoke(list, new[] { obj.Reference });
-//        }
-//      }
-//      break;
-//
-//      case StructProperty.TypeName:
-//      {
-//        foreach (var obj in Elements.Cast<IStructPropertyValue>())
-//        {
-//          addMethod.Invoke(list, new[] { obj.Data });
-//        }
-//      }
-//      break;
-//
-//      case InterfaceProperty.TypeName:
-//      {
-//        foreach (var obj in Elements.Cast<IInterfacePropertyValue>())
-//        {
-//          addMethod.Invoke(list, new[] { obj.Reference });
-//        }
-//      }
-//      break;
-//
-//      default:
-//      {
+
+    switch (getType())
+    {
+      case ByteProperty.TYPE_NAME:
+      {
+
+        for (IArrayElement element : elements)
+        {
+          PropertyDescriptor pd = new PropertyDescriptor(field.getName(), saveObject.getClass());
+          List<IBytePropertyValue> datas = (List<IBytePropertyValue>)pd.getReadMethod().invoke(saveObject);
+          datas.add((IBytePropertyValue)element);
+          pd.getWriteMethod().invoke(saveObject, datas);
+        }
+      }
+      break;
+      case EnumProperty.TYPE_NAME:
+      {
+        // TODO: add assigning of enums
+        saveObject.addDynamicProperty(this);
+      }
+      break;
+
+      case IntProperty.TYPE_NAME:
+      {
+        for (IArrayElement element : elements)
+        {
+          PropertyDescriptor pd = new PropertyDescriptor(field.getName(), saveObject.getClass());
+          List<IIntPropertyValue> datas = (List<IIntPropertyValue>)pd.getReadMethod().invoke(saveObject);
+          datas.add((IIntPropertyValue)element);
+          pd.getWriteMethod().invoke(saveObject, datas);
+        }
+      }
+      break;
+      case ObjectProperty.TYPE_NAME:
+      {
+        for (IArrayElement element : elements)
+        {
+          PropertyDescriptor pd = new PropertyDescriptor(field.getName(), saveObject.getClass());
+          List<IObjectPropertyValue> datas = (List<IObjectPropertyValue>)pd.getReadMethod().invoke(saveObject);
+          datas.add((IObjectPropertyValue)element);
+          pd.getWriteMethod().invoke(saveObject, datas);
+        }
+      }
+      break;
+      case StructProperty.TYPE_NAME:
+      {
+        for (IArrayElement element : elements)
+        {
+          PropertyDescriptor pd = new PropertyDescriptor(field.getName(), saveObject.getClass());
+          List<IStructPropertyValue> datas = (List<IStructPropertyValue>)pd.getReadMethod().invoke(saveObject);
+          datas.add((IStructPropertyValue)element);
+          pd.getWriteMethod().invoke(saveObject, datas);
+        }
+      }
+      break;
+      case InterfaceProperty.TYPE_NAME:
+      {
+        for (IArrayElement element : elements)
+        {
+          PropertyDescriptor pd = new PropertyDescriptor(field.getName(), saveObject.getClass());
+          List<IInterfacePropertyValue> datas = (List<IInterfacePropertyValue>)pd.getReadMethod().invoke(saveObject);
+          datas.add((IInterfacePropertyValue)element);
+          pd.getWriteMethod().invoke(saveObject, datas);
+        }
+      }
+      break;
+      default:
+      {
 //        log.Warn($"Attempted to assign array {PropertyName} of unknown type {Type}");
-//        saveObject.AddDynamicProperty(this);
-//      }
-//      break;
-//    }
-//  }
+        saveObject.addDynamicProperty(this);
+      }
+      break;
+    }
+  }
 }

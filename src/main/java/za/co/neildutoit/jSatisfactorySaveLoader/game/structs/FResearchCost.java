@@ -7,9 +7,9 @@ public class FResearchCost extends GameStruct
 {
 //  public override String StructName => "ResearchCost";
 //
-//        [StructProperty("researchRecipe")]
-//  public ObjectReference ResearchRecipe //{ get; set; }
+//        @StructPropertyAttr("researchRecipe")
+//  public ObjectReference ResearchRecipe;
 //
-//        [StructProperty("Cost")]
+//        @StructPropertyAttr("Cost")
 //  public List<FItemAmount> Cost { get; } = new List<FItemAmount>();
 }

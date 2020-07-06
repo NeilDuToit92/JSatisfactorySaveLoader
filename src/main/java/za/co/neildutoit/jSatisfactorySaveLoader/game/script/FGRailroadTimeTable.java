@@ -5,9 +5,9 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.SaveActor;
 
 @SaveObjectClass("/Script/FactoryGame.FGRailroadTimeTable")
 public class FGRailroadTimeTable extends SaveActor {
-//   @SaveProperty("mStops")]
+//   @SaveProperty("mStops")
 //  public List<FTimeTableStop> Stops { get; } = new List<FTimeTableStop>();
 //
-//        @SaveProperty("mCurrentStop")]
-//  public int CurrentStop //{ get; set; }
+//        @SaveProperty("mCurrentStop")
+//  public int CurrentStop;
 }

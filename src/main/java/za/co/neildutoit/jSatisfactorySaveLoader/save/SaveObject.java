@@ -79,7 +79,7 @@ public abstract class SaveObject implements IPropertyContainer {
   public void deserializeNativeData(BinaryReader reader, int length) throws IOException {
     if (!missingDeserializers.contains(typePath)) {
 //      log.Warn($"Missing native deserializer for {ObjectKind} {TypePath} ({length} bytes)");
-      System.out.println("Missing native deserializer for {ObjectKind} {TypePath} ({length} bytes)");
+      System.out.println("Missing native deserializer for " + typePath);
       missingDeserializers.add(typePath);
     }
 
@@ -96,7 +96,7 @@ public abstract class SaveObject implements IPropertyContainer {
 //    if (NativeData != null) {
 //      if (!missingSerializers.Contains(TypePath)) {
 //        log.Warn($"Missing native serializer for {ObjectKind} {TypePath} ({NativeData.Length} bytes)");
-//        missingSerializers.Add(TypePath);
+//        missingSerializers.add(TypePath);
 //      }
 //
 //      writer.Write(NativeData);

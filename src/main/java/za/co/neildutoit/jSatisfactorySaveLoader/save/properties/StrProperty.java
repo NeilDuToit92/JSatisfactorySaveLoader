@@ -4,6 +4,7 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.IStrPropertyValue;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 public class StrProperty extends SerializedProperty implements IStrPropertyValue {
   public static final String TYPE_NAME = "StrProperty";
@@ -12,13 +13,13 @@ public class StrProperty extends SerializedProperty implements IStrPropertyValue
 
 //public override Type BackingType => typeof(String);
 //public override object BackingObject => Value;
+private Field backingObject = this.getClass().getDeclaredField("value");
 
 //public override int SerializedLength => Value.GetSerializedLength();
 
   private String value;
 
-
-  public StrProperty(String propertyName, int index) {
+  public StrProperty(String propertyName, int index) throws NoSuchFieldException {
     super(propertyName, index);
   }
 
@@ -32,12 +33,17 @@ public class StrProperty extends SerializedProperty implements IStrPropertyValue
     this.value = value;
   }
 
-//      public override String ToString()
+  @Override
+  public Field getBackingObject() {
+    return backingObject;
+  }
+
+  //      public override String ToString()
 //    {
 //    return $"String {PropertyName}: {Value}";
 //    }
 
-  public static StrProperty deserialize(BinaryReader reader, String propertyName, int index) throws IOException {
+  public static StrProperty deserialize(BinaryReader reader, String propertyName, int index) throws IOException, NoSuchFieldException {
     StrProperty result = new StrProperty(propertyName, index);
 
     reader.assertNullByte();
@@ -46,7 +52,7 @@ public class StrProperty extends SerializedProperty implements IStrPropertyValue
     return result;
   }
 
-//public override void Serialize(BinaryWriter writer)
+//public void Serialize(BinaryWriter writer)
 //    {
 //    writer.Write((byte)0);
 //    writer.WriteLengthPrefixedString(Value);

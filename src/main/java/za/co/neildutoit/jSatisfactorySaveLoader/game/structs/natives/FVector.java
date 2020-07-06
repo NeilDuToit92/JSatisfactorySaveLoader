@@ -28,7 +28,7 @@ public class FVector extends GameStruct {
     setData(reader.readVector3());
   }
 
-//  public override void Serialize(BinaryWriter writer)
+//  public void Serialize(BinaryWriter writer)
 //  {
 //    writer.Write(Data);
 //  }

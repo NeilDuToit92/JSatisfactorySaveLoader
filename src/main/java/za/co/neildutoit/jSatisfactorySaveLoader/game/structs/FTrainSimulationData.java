@@ -10,6 +10,6 @@ public class FTrainSimulationData extends GameStruct
 {
 //  public override String StructName => "TrainSimulationData";
 //
-//        [StructProperty("Velocity")]
-//  public float Velocity //{ get; set; }
+//        @StructPropertyAttr("Velocity")
+//  public float Velocity;
 }

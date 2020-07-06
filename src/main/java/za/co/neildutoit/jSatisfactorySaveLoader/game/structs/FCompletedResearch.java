@@ -7,9 +7,9 @@ public class FCompletedResearch extends GameStruct
 {
 //  public override String StructName => "CompletedResearch";
 //
-//        [StructProperty("researchRecipe")]
-//  public ObjectReference ResearchRecipe //{ get; set; }
+//        @StructPropertyAttr("researchRecipe")
+//  public ObjectReference ResearchRecipe;
 //
-//        [StructProperty("RewardHasBeenClaimed")]
-//  public bool RewardHasBeenClaimed //{ get; set; }
+//        @StructPropertyAttr("RewardHasBeenClaimed")
+//  public boolean RewardHasBeenClaimed;
 }

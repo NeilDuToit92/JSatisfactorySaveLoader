@@ -6,8 +6,12 @@ import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.DynamicGameStruct;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.structs.GameStruct;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.arrayValues.*;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
+import java.beans.IntrospectionException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,16 +20,16 @@ public class MapProperty extends SerializedProperty {
 //public const String TypeName = nameof(MapProperty);
 //public override String PropertyType => TypeName;
 
-//public override Type BackingType => typeof(Dictionary<,>);
+  //public override Type BackingType => typeof(Dictionary<,>);
 //public override object BackingObject => Elements;
-
+  private Field backingObject = this.getClass().getDeclaredField("elements");
 //public override int SerializedLength => 0;
 
   private String keyType;
   private String valueType;
   private Map<IArrayElement, IArrayElement> elements = new HashMap<>();
 
-  public MapProperty(String propertyName, int index) {
+  public MapProperty(String propertyName, int index) throws NoSuchFieldException {
     super(propertyName, index);
   }
 
@@ -53,12 +57,17 @@ public class MapProperty extends SerializedProperty {
     this.elements = elements;
   }
 
+  @Override
+  public Field getBackingObject() {
+    return backingObject;
+  }
+
   //public override String ToString()
 //    {
 //    return $"Map<{KeyType},{ValueType}> {PropertyName}";
 //    }
 
-  public static MapProperty deserialize(BinaryReader reader, String propertyName, int index, MutableInt overhead) throws IOException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+  public static MapProperty deserialize(BinaryReader reader, String propertyName, int index, MutableInt overhead) throws IOException, InstantiationException, IllegalAccessException, NoSuchFieldException, IntrospectionException, InvocationTargetException {
     MapProperty result = new MapProperty(propertyName, index);
 
     result.setKeyType(reader.readCharArray().trim());
@@ -80,14 +89,11 @@ public class MapProperty extends SerializedProperty {
     for (int i = 0; i < count; i++) {
       IArrayElement key, value;
 
-      System.out.println(result.getKeyType());
       switch (result.getKeyType()) {
         case IntProperty.TYPE_NAME: {
-          System.out.println("Before IntProperty " + reader.getPosition());
           IntArrayValue intArrayValue = new IntArrayValue();
           intArrayValue.setValue(reader.readInt32());
           key = intArrayValue;
-          System.out.println("After IntProperty " + reader.getPosition());
         }
         break;
         case ObjectProperty.TYPE_NAME: {
@@ -115,13 +121,11 @@ public class MapProperty extends SerializedProperty {
         }
         break;
         case StructProperty.TYPE_NAME: {
-          int p1 = reader.getPosition();
           GameStruct gameStruct = new DynamicGameStruct(null);
           gameStruct.deserialize(reader);
           StructArrayValue structArrayValue = new StructArrayValue();
           structArrayValue.setData(gameStruct);
           value = structArrayValue;
-
         }
         break;
         default:
@@ -135,13 +139,13 @@ public class MapProperty extends SerializedProperty {
     return result;
   }
 
-//public override void Serialize(BinaryWriter writer)
+//public void Serialize(BinaryWriter writer)
 //    {
 //    throw new NotImplementedException();
 //    }
 
-//  public void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info) {
-//    // TODO: add assigning of maps
-//    saveObject.addDynamicProperty(this);
-//  }
+  public void assignToProperty(IPropertyContainer saveObject, Field field) {
+    // TODO: add assigning of maps
+    saveObject.addDynamicProperty(this);
+  }
 }
