@@ -1,6 +1,8 @@
 package za.co.neildutoit.jSatisfactorySaveLoader.game.enums;
 
-public enum EGamePhase {
+import za.co.neildutoit.jSatisfactorySaveLoader.save.EnumAsByte;
+
+public enum EGamePhase implements EnumAsByte {
   EGP_EarlyGame(0),
   EGP_MidGame(1),
   EGP_LateGame(2),

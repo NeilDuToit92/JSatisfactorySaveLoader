@@ -2,6 +2,10 @@ package za.co.neildutoit.jSatisfactorySaveLoader.game.structs;
 
 import za.co.neildutoit.jSatisfactorySaveLoader.game.GameStructAttr;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.StructPropertyAttr;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.arrayValues.IArrayElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @GameStructAttr("Hotbar")
 public class FHotbar extends GameStruct
@@ -9,14 +13,13 @@ public class FHotbar extends GameStruct
 //  public override String StructName => "Hotbar";
 
   @StructPropertyAttr("HotbarShortcuts")
-  //TODO: @NDT: What must this be??
-  private Object hotbarShortcuts;
+  private List<IArrayElement> hotbarShortcuts = new ArrayList<>();
 
-  public Object getHotbarShortcuts() {
+  public List<IArrayElement> getHotbarShortcuts() {
     return hotbarShortcuts;
   }
 
-  public void setHotbarShortcuts(Object hotbarShortcuts) {
+  public void setHotbarShortcuts(List<IArrayElement> hotbarShortcuts) {
     this.hotbarShortcuts = hotbarShortcuts;
   }
 }

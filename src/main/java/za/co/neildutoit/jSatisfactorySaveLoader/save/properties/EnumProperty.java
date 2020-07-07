@@ -8,6 +8,8 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyCont
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class EnumProperty extends SerializedProperty implements IEnumPropertyValue {
   public static final String TYPE_NAME = "EnumProperty";
@@ -16,9 +18,9 @@ public class EnumProperty extends SerializedProperty implements IEnumPropertyVal
 //public const String TypeName = nameof(EnumProperty);
 //public override String PropertyType => TypeName;
 
-//public override Type BackingType => typeof(Enum);
+  //public override Type BackingType => typeof(Enum);
 //public override object BackingObject => Value;
-private Field backingObject = this.getClass().getDeclaredField("value");
+  private Field backingObject = this.getClass().getDeclaredField("value");
 
 //public override int SerializedLength => Value.GetSerializedLength();
 
@@ -76,33 +78,35 @@ private Field backingObject = this.getClass().getDeclaredField("value");
     return result;
   }
 
-//public void Serialize(BinaryWriter writer)
+  //public void Serialize(BinaryWriter writer)
 //    {
 //    writer.WriteLengthPrefixedString(Type);
 //    writer.Write((byte)0);
 //    writer.WriteLengthPrefixedString(Value);
 //    }
 //
-public void assignToProperty(IPropertyContainer saveObject, Field field) {
-  throw new NotImplementedException();
-}
-//public void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info)
-//    {
-//    if (Type != info.PropertyType.Name)
-//    {
-//    log.Error($"Attempted to assign enum {PropertyName} ({Type}) to mismatched property {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
-//    saveObject.AddDynamicProperty(this);
-//    return;
-//    }
-//
-//    // TODO: should probably already be in BackingObject
-//    if (!Enum.TryParse(info.PropertyType, Value.Split(':').Last(), true, out object enumValue))
-//    {
-//    log.Error($"Failed to parse \"{Value}\" as {info.PropertyType.Name}");
-//    saveObject.AddDynamicProperty(this);
-//    return;
-//    }
-//
-//    info.SetValue(saveObject, enumValue);
-//    }
+  public void assignToProperty(IPropertyContainer saveObject, Field field) throws InvocationTargetException, IllegalAccessException {
+    if (!getType().equals(field.getType().getSimpleName())) {
+      System.out.println("Attempted to assign enum {PropertyName} ({Type}) to mismatched property {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
+      saveObject.addDynamicProperty(this);
+      return;
+    }
+
+    // TODO: should probably already be in BackingObject
+    String[] values = getValue().split(":");
+    String val = values[values.length - 1];
+
+    Enum enumValue;
+    try {
+      //TODO: @Ndt - There has to be a way to make this better
+      enumValue = Enum.valueOf((Class<Enum>) field.getType(), val);
+    } catch (IllegalArgumentException iae) {
+      System.out.println("No enum value " + val + " found in class " + field.getType().getTypeName());
+      saveObject.addDynamicProperty(this);
+      return;
+    }
+
+    setFieldValue(saveObject, field, enumValue);
+  }
+
 }

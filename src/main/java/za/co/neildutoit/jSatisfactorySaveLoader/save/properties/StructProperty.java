@@ -137,8 +137,6 @@ public class StructProperty extends SerializedProperty implements IStructPropert
       return;
     }
 
-    String typeName1 = field.getType().getTypeName();
-    String typeName2 = data.getClass().getTypeName();
     if (data == null || !field.getType().getTypeName().equals(data.getClass().getTypeName()))
     {
 //      log.Error($"Attempted to assign {PropertyType} {PropertyName} to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");

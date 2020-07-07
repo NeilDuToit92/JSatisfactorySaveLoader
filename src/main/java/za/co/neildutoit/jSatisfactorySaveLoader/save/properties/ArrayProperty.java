@@ -199,7 +199,7 @@ public class ArrayProperty extends SerializedProperty {
 //
   public void assignToProperty(IPropertyContainer saveObject, Field field) throws InvocationTargetException, IllegalAccessException, IntrospectionException {
 
-    //TODO: @NDT Check if this coeers all scenarios
+    //TODO: @NDT Check if this covers all scenarios
     if (field.getType() != List.class && !field.getType().isArray())
     {
 //      System.out.println("Attempted to assign array {PropertyName} to non list field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");

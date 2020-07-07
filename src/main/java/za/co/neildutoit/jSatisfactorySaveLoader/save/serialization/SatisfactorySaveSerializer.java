@@ -3,6 +3,7 @@ package za.co.neildutoit.jSatisfactorySaveLoader.save.serialization;
 import org.apache.commons.lang3.mutable.MutableInt;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import za.co.neildutoit.jSatisfactorySaveLoader.game.enums.ESessionVisibility;
+import za.co.neildutoit.jSatisfactorySaveLoader.game.script.FGFactoryConnectionComponent;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.*;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.*;
@@ -124,27 +125,13 @@ public class SatisfactorySaveSerializer {
     updateDeserializationProgress(0, -1);
 //    log.Info($"Parsing save took {sw.ElapsedMilliseconds / 1000f}s");
 
-    for (String missingProperty : missingProperties)
-    {
+    for (String missingProperty : missingProperties) {
       System.out.println("Missing: " + missingProperty);
-    }
-
-     Map<String, List<SaveObject>> itemsByGroup = new TreeMap<>();
-
-    for (SaveObject saveObject :save.getObjects())
-    {
-      String className = saveObject.getClass().getTypeName();
-      List<SaveObject> objects = new ArrayList<>();
-      if (itemsByGroup.containsKey(className))
-      {
-        objects = itemsByGroup.get(className);
-      }
-      objects.add(saveObject);
-      itemsByGroup.put(className, objects);
     }
 
     return save;
   }
+
 
   public byte[] decompress(byte[] data) throws IOException, DataFormatException {
     Inflater inflater = new Inflater();
@@ -357,8 +344,7 @@ public class SatisfactorySaveSerializer {
     if (propertyName.equals("None")) {
       return null;
     }
-    if (propertyName.equals("mStorageInventory"))
-    {
+    if (propertyName.equals("mStorageInventory")) {
 //      System.out.println("");
     }
 

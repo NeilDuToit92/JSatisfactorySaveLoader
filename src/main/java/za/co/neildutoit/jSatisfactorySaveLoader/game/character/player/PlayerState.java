@@ -24,7 +24,8 @@ public class PlayerState extends SaveActor {
   private List<ObjectReference> hotbarShortcuts = new ArrayList<>();
 
   @SaveProperty("mHotbars")
-  private FHotbarsArray hotBars;
+//  private FHotbarsArray[] hotBars;
+  private List<ObjectReference> hotBars = new ArrayList<>();
 
   @SaveProperty("mNewRecipes")
   private List<ObjectReference> newRecipes = new ArrayList<>();
@@ -78,11 +79,11 @@ public class PlayerState extends SaveActor {
     this.hotbarShortcuts = hotbarShortcuts;
   }
 
-  public FHotbarsArray getHotBars() {
+  public List<ObjectReference> getHotBars() {
     return hotBars;
   }
 
-  public void setHotBars(FHotbarsArray hotBars) {
+  public void setHotBars(List<ObjectReference> hotBars) {
     this.hotBars = hotBars;
   }
 

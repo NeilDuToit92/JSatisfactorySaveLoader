@@ -7,6 +7,7 @@ import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.ITe
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.SQLOutput;
 import java.util.Objects;
 
 public class TextProperty extends SerializedProperty implements ITextPropertyValue {
@@ -66,8 +67,7 @@ private Field backingObject = this.getClass().getDeclaredField("text");
         baseTextEntry.setValue(reader.readCharArray());
         return baseTextEntry;
       }
-//      break;
-//      case ArgumentFormat: {
+      case ArgumentFormat: {
 //        var result = new ArgumentFormatTextEntry(flags)
 //        {
 //          SourceFormat = (BaseTextEntry)ParseTextEntry(reader)
@@ -84,8 +84,10 @@ private Field backingObject = this.getClass().getDeclaredField("text");
 //          });
 //
 //        }
+        System.out.println("ArgumentFormat not implemented");
 //        return result;
-//      }
+        return null;
+      }
       case None: {
         return new TextEntry.NoneTextEntry(flags);
       }

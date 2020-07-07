@@ -77,7 +77,7 @@ public class SerializedProperty {
   public Field getMatchingSaveProperty(Class<?> targetType) {
     Field retField = null;
     if (getPropertyName().equals("mStorageInventory")) {
-      System.out.println("");
+//      System.out.println("");
     }
     if (propertyCache.containsKey(targetType.getTypeName() + ":" + getPropertyName())) {
       retField = propertyCache.get(targetType.getTypeName() + ":" + getPropertyName());
@@ -149,7 +149,7 @@ public class SerializedProperty {
         propertyCache.put(targetType.getTypeName() + ":" + getPropertyName(), retField);
       }
 
-      if (retField == null)
+      if (retField == null && !"za.co.neildutoit.jSatisfactorySaveLoader.game.structs.DynamicGameStruct".equals(targetType.getTypeName()))
       {
         System.out.println("getMatchingStructProperty returning null: TypeName: " +  targetType.getTypeName() + " Property Name: " + getPropertyName());
       }

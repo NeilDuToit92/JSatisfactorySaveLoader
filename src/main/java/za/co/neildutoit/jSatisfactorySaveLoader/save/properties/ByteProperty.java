@@ -2,12 +2,16 @@ package za.co.neildutoit.jSatisfactorySaveLoader.save.properties;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.mutable.MutableInt;
+import za.co.neildutoit.jSatisfactorySaveLoader.save.EnumAsByte;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.custom.BinaryReader;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.properties.abstractions.IBytePropertyValue;
 import za.co.neildutoit.jSatisfactorySaveLoader.save.serialization.IPropertyContainer;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.TypeVariable;
+import java.util.List;
 
 public class ByteProperty extends SerializedProperty implements IBytePropertyValue {
   public static final String TYPE_NAME = "ByteProperty";
@@ -16,9 +20,9 @@ public class ByteProperty extends SerializedProperty implements IBytePropertyVal
 //public const String TypeName = nameof(ByteProperty);
 //public override String PropertyType => TypeName;
 
-//public override Type BackingType => typeof(object);
+  //public override Type BackingType => typeof(object);
 //public override object BackingObject => null;
-private Field backingObject = null;
+  private Field backingObject = null;
 
 //public override int SerializedLength => EnumType == "None" ? 1 : EnumValue.GetSerializedLength();
   /**
@@ -118,7 +122,7 @@ private Field backingObject = null;
     return result;
   }
 
-//  void Serialize(BinaryWriter writer) {
+  //  void Serialize(BinaryWriter writer) {
 //    writer.WriteLengthPrefixedString(EnumType);
 //    writer.Write((byte) 0);
 //
@@ -131,46 +135,67 @@ private Field backingObject = null;
 //
 //  public override
 //
-public void assignToProperty(IPropertyContainer saveObject, Field field) {
-  throw new NotImplementedException();
-}
-//  void AssignToProperty(IPropertyContainer saveObject, PropertyInfo info) {
-//    if (IsEnum) {
-//      if (!info.PropertyType.IsGenericType || info.PropertyType.GetGenericTypeDefinition() != typeof(EnumAsByte < >))
-//      {
-//        log.Error($"Attempted to assign {PropertyType} ({EnumType}) {PropertyName} to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
-//        saveObject.AddDynamicProperty(this);
-//        return;
-//      }
-//
-//      var enumType = info.PropertyType.GenericTypeArguments[0];
-//      if (enumType.Name != EnumType) {
-//        log.Error($"Attempted to assign {PropertyType} ({EnumType}) {PropertyName} to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
-//        saveObject.AddDynamicProperty(this);
-//        return;
-//      }
-//
-//      if (!Enum.TryParse(enumType, EnumValue, true, out object enumValue)) {
-//        log.Error($"Failed to parse \"{EnumValue}\" as {enumType.Name}");
-//        saveObject.AddDynamicProperty(this);
-//        return;
-//      }
-//
-//      var enumAsByteType = typeof(EnumAsByte < >).MakeGenericType(new[]{
-//        enumType
-//      });
-//      var instance = Activator.CreateInstance(enumAsByteType, enumValue);
-//      info.SetValue(saveObject, instance);
-//      return;
-//    }
-//
-//    if (info.PropertyType != typeof( byte))
-//    {
-//      log.Error($"Attempted to assign {PropertyType} {PropertyName} to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
-//      saveObject.AddDynamicProperty(this);
-//      return;
-//    }
-//
-//    info.SetValue(saveObject, ByteValue);
-//  }
+  public void assignToProperty(IPropertyContainer saveObject, Field field) throws InvocationTargetException, IllegalAccessException {
+    if (isEnum()) {
+
+      boolean isEnumAsByte = false;
+      for(Class<?> interfaceClass : field.getType().getInterfaces())
+      {
+        if (interfaceClass == EnumAsByte.class)
+        {
+          isEnumAsByte = true;
+          break;
+        }
+      }
+
+      //From a generic class you get a nonempty array of TypeVariable
+      //From a non-generic class you get an empty array.
+      if (field.getType().getTypeParameters().length == 0 && !isEnumAsByte)
+      {
+        System.out.println("Attempted to assign " + getPropertyType() + " (" + getEnumType() + ") " + getPropertyName() +
+            " to incompatible backing field " + field.getType() + "." + field.getName() + " (" + field.getType().getTypeName() + ")");
+        saveObject.addDynamicProperty(this);
+        return;
+      }
+
+      String enumTypeName = null;
+      if (field.getType().getTypeParameters().length > 0)
+      {
+        enumTypeName = field.getType().getTypeParameters()[0].getTypeName();
+      }
+      if (enumTypeName == null)
+      {
+        enumTypeName = field.getType().getSimpleName();
+      }
+      if (!enumTypeName.equals(getEnumType())) {
+        System.out.println("Attempted to assign {PropertyType} ({EnumType}) {PropertyName} to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
+        saveObject.addDynamicProperty(this);
+        return;
+      }
+
+      Enum enumValue = null;
+      try {
+        //TODO: @Ndt - There has to be a way to make this better
+        enumValue = Enum.valueOf((Class<Enum>) field.getType(), getEnumValue());
+      } catch (IllegalArgumentException iae) {
+        System.out.println("Failed to parse " + getEnumValue() + " as " + enumTypeName);
+        saveObject.addDynamicProperty(this);
+        return;
+      }
+
+      setFieldValue(saveObject, field, enumValue);
+      return;
+    }
+
+    if (field.getType() != Byte.class && field.getType() != byte.class)
+    {
+      System.out.println("Attempted to assign " + getPropertyType() + " " + getPropertyName() + " to incompatible backing field {info.DeclaringType}.{info.Name} ({info.PropertyType.Name})");
+      saveObject.addDynamicProperty(this);
+      return;
+    }
+
+    setFieldValue(saveObject, field, getByteValue());
+//    System.out.println("ByteProperty.assignToProperty has not been implemented yet");
+//    throw new NotImplementedException();
+  }
 }

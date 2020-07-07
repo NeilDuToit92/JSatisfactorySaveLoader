@@ -75,15 +75,8 @@ public class MapProperty extends SerializedProperty {
 
     overhead.setValue(getSerializedLength(result.getKeyType()) + getSerializedLength(result.getValueType()) + 1);
 
-//    var keyType = GetPropertyValueTypeFromName(result.KeyType);
-//    var valueType = GetPropertyValueTypeFromName(result.ValueType);
-//    result.Elements = (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(keyType, valueType));
-
     reader.assertNullByte();
     reader.assertNullInt32();
-
-    int posA = reader.getPosition();
-    int posB = reader.getPosition();
 
     int count = reader.readInt32();
     for (int i = 0; i < count; i++) {
